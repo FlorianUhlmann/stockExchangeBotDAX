@@ -59,6 +59,11 @@ class DataPreparation:
         stockData.reset_index(inplace=True, drop=True)
 
         return stockData
+    
+    def setCloseColumnToFloat(self,stockData):
+
+        stockData['close'] =  stockData['close'].astype(float)
+        return stockData
 
     def saveDataFrame(self,stockData,placeToSave):
 
@@ -72,13 +77,15 @@ class DataPreparation:
 
 def main():
 
-    # DFtoPrepare = DataPreparation('D:/Profiles/fuhlmann/Programmierung/Python/zz_boersendaten/Boersendaten/DAX30_TimeFrameMin_M1_CandleData_Raw.csv')
-    DFtoPrepare = DataPreparation('D:/Profiles/fuhlmann/Programmierung/Python/zz_boersendaten/Boersendaten/DAX_data/DAX_M1_2019/DAX_M1_2019.csv')
+    # DFtoPrepare = DataPreparation('D:/Profiles/fuhlmann/Programmierung/Python/boerse_DataScience_project/Boersendaten/DAX30_TimeFrameMin_M1_CandleData_Raw.csv')
+    DFtoPrepare = DataPreparation('D:/Profiles/fuhlmann/Programmierung/Python/boerse_DataScience_project/Boersendaten/DAX_data/DAX_M1_2019/DAX_M1_2019.csv')
     # DFtoPrepare.dataframe
     DFtoPrepare.showDataFrame()
     DFtoPrepare.dataFrame = DFtoPrepare.removeDataInTimerange(DFtoPrepare.dataFrame)
     DFtoPrepare.dataFrame = DFtoPrepare.removeColumns(DFtoPrepare.dataFrame)
-    DFtoPrepare.saveDataFrame(DFtoPrepare.dataFrame,'D:/Profiles/fuhlmann/Programmierung/python/zz_boersendaten/Boersendaten/DAX_data/DAX_M1_2019/DAX_M1_2019_only_Close_values_UTC-5_test.csv')
+    DFtoPrepare.dataFrame = DFtoPrepare.setCloseColumnToFloat(DFtoPrepare.dataFrame)
+    DFtoPrepare.saveDataFrame(DFtoPrepare.dataFrame,'D:/Profiles/fuhlmann/Programmierung/python/boerse_DataScience_project/Boersendaten/DAX_data/DAX_M1_2019/DAX_M1_2019_only_Close_values_UTC-5_test.csv')
+    print(DFtoPrepare.dataFrame.dtypes)
     DFtoPrepare.jobDone()
 main()
 

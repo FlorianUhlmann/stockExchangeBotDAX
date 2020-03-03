@@ -30,9 +30,9 @@ class HsiDataPreparation:
         df= stockDataToCut
 
         #remove all times from 00:00 - 1:59 h
-        for h in range(5, 24):
+        for h in range(3, 24):
             for m in range(0, 60):
-                if (h == 5 and m == 0):
+                if (h == 3 and m == 0):
                     continue
                 t = time(h, m)
                 time_convert = t.strftime("%H:%M")
@@ -64,12 +64,13 @@ class HsiDataPreparation:
 
 def main():
 
-    # DFtoPrepare = HsiDataPreparation('D:/Profiles/fuhlmann/Programmierung/Python/zz_boersendaten/Boersendaten/DAX30_TimeFrameMin_M1_CandleData_Raw.csv')
-    DFtoPrepare = HsiDataPreparation('D:/Profiles/fuhlmann/Programmierung/Python/zz_boersendaten/Boersendaten/HAN_SENG_data/HSI_M1_2019/HSI_M1_2019.csv')
+    # DFtoPrepare = HsiDataPreparation('D:/Profiles/fuhlmann/Programmierung/Python/boerse_DataScience_project/Boersendaten/DAX30_TimeFrameMin_M1_CandleData_Raw.csv')
+    DFtoPrepare = HsiDataPreparation('D:/Profiles/fuhlmann/Programmierung/Python/boerse_DataScience_project/Boersendaten/HAN_SENG_data/HSI_M1_2019/HSI_M1_2019.csv')
     # DFtoPrepare.dataframe
     DFtoPrepare.showDataFrame()
     DFtoPrepare.dataFrame = DFtoPrepare.removeDataInTimerange(DFtoPrepare.dataFrame)
     DFtoPrepare.dataFrame = DFtoPrepare.removeColumns(DFtoPrepare.dataFrame)
+    DFtoPrepare.saveDataFrame(DFtoPrepare.dataFrame,'D:/Profiles/fuhlmann/Programmierung/Python/boerse_DataScience_project/Boersendaten/HAN_SENG_data/HSI_M1_2019/HSI_M1_2019_only_close_values.csv')
     DFtoPrepare.jobDone()
     DFtoPrepare.dataFrame.info()
 main()

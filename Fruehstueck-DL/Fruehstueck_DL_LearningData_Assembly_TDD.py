@@ -57,8 +57,8 @@ class LearningDataAssembly(unittest.TestCase):
 
             list_featuresDAX = GenerateList_featureDAX(self)
             list_featuresHSI = GenerateList_featureHSI(self)
-            df_HSI_UTCminus5 = pd.DataFrame(np.array([range(len(list_featuresHSI))]), columns=list_featuresHSI)
-            df_DAX_UTCminus5 = pd.DataFrame(np.array([range(len(list_featuresDAX))]), columns=list_featuresDAX)
+            df_HSI_UTCminus5 = pd.DataFrame(np.array([range(len(list_featuresHSI))]).astype(float), columns=list_featuresHSI)
+            df_DAX_UTCminus5 = pd.DataFrame(np.array([range(len(list_featuresDAX))]).astype(float), columns=list_featuresDAX)
 
             df_HSI_DAX_UTCminus5 = pd.concat([df_HSI_UTCminus5, df_DAX_UTCminus5], axis=1)
 
@@ -76,7 +76,8 @@ class LearningDataAssembly(unittest.TestCase):
                         time_convert = t.strftime("%H:%M")
 
                         list_traidingTimeHSI.append(str(time_convert))
-                        if (h == 3 and m >= 29): break
+                        if h == 3 and m >= 29:
+                            break
                 for h in range(4, 5):
                     for m in range(15, 60):
 
@@ -84,7 +85,8 @@ class LearningDataAssembly(unittest.TestCase):
                         time_convert = t.strftime("%H:%M")
 
                         list_traidingTimeHSI.append(str(time_convert))
-                        if (h == 5): break
+                        if h == 5:
+                            break
 
                 hsiClose = time(5, 0).strftime("%H:%M")
                 list_traidingTimeHSI.append(str(hsiClose))
@@ -172,10 +174,8 @@ class LearningDataAssembly(unittest.TestCase):
         ISTDataFrame = pd.DataFrame(arrayTrainingData, columns=(features))
 
         Dax_DataFrameRaw = GenerateDAXDataFrameRaw(self)
-        print(Dax_DataFrameRaw)
 
         HSI_DataFrameRaw = GenerateHSIDataFrameRaw(self)
-        print(HSI_DataFrameRaw)
 
         ISTDataFrame.to_csv("d:\ISTDATAFRAME.csv")
         SollDataFrame.to_csv("d:\SOLLDATAFRAME.csv")

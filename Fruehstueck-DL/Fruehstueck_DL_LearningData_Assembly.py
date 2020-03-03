@@ -25,22 +25,20 @@ class LearningDataAssembly:
         t = time(13, 59)
         time_convert = t.strftime("%H:%M")
         DAX_Close_only = dax_DataFrame.loc[dax_DataFrame['time'] == str(time_convert)]
-        print(DAX_Close_only)
         return DAX_Close_only
 
 
 
     def createArrayTrainingData(self,DAX_Close_only,hsi_DataFrame,dax_DataFrame):
         array_trainData = []
+        array_trainData =[]
         for DAXClose in range(0, len(DAX_Close_only['date'])):
-            # print(DAX_Close_only['date'].iloc[0]+ timedelta(days=1))
+            #print(DAX_Close_only['date'].iloc[0]+ timedelta(days=1))
             DAX_DAY = dax_DataFrame.loc[dax_DataFrame['date'] == (DAX_Close_only['date'].iloc[0] + timedelta(days=1))]
             # remove 13:59h
             DAX_DAY = DAX_DAY.loc[DAX_DAY['time'] != str(time(13, 59).strftime("%H:%M"))]
-            print(DAX_DAY)
-            # get all dax values one day later
+            # get all HSI values one day later
             HSI_DAY = hsi_DataFrame.loc[hsi_DataFrame['date'] == (DAX_Close_only['date'].iloc[0] + timedelta(days=1))]
-            print(HSI_DAY)
             # concat HSI and DAX values
             HSI_DAX_concat = pd.concat([HSI_DAY, DAX_Close_only.iloc[0:1], DAX_DAY], ignore_index=True)
             # get close values of HSI_DAX_concat into a list
@@ -52,7 +50,9 @@ class LearningDataAssembly:
             else:
                 array_trainData = np.vstack((array_trainData, array_trainData_first_day))
 
-        return array_trainData
+        array_trainData_as_float = array_trainData.astype(float)
+
+        return array_trainData_as_float
 
 
 
@@ -69,7 +69,6 @@ class LearningDataAssembly:
             # add string 'HSI_' to list of HSI operation time ' 00:00 , 00:01 .....' -> ' DAX_00:00 , DAX_00:01 .....'
             list_featuresDAX_incomplete = ['DAX_' + s for s in list_DAX_minutes]
             list_featuresDAX = list_featuresDAX + list_featuresDAX_incomplete
-            print(list_featuresDAX)
             return list_featuresDAX
 
         def generateListFeaturesHSI(HSI_DAY):
@@ -91,8 +90,7 @@ class LearningDataAssembly:
 
         list_featuresHSI = generateListFeaturesHSI(HSI_DAY)
         list_featuresDAX = generateListFeaturesDAX(DAX_DAY)
-
-        return [list_featuresHSI + list_featuresDAX]
+        return list_featuresHSI + list_featuresDAX
 
 
     def saveDataFrame(self,stockData,placeToSave):
@@ -101,14 +99,13 @@ class LearningDataAssembly:
 
 def main():
 
-    GenerateTrainData = LearningDataAssembly('D:/Profiles/fuhlmann/Programmierung/python/zz_boersendaten/Boersendaten/HAN_SENG_data/HSI_M1_2019/HSI_M1_2019_DemoDF_for_TDD.csv','D:/Profiles/fuhlmann/Programmierung/python/zz_boersendaten/Boersendaten/DAX_data/DAX_M1_2019/DAX_M1_2019_DemoDF_for_TDD.csv')
+    GenerateTrainData = LearningDataAssembly('D:/Profiles/fuhlmann/Programmierung/python/boerse_DataScience_project/Boersendaten/HAN_SENG_data/HSI_M1_2019/HSI_M1_2019_DemoDF_for_TDD.csv','D:/Profiles/fuhlmann/Programmierung/python/boerse_DataScience_project/Boersendaten/DAX_data/DAX_M1_2019/DAX_M1_2019_DemoDF_for_TDD.csv')
     (hsi_DataFrame,dax_DataFrame)= GenerateTrainData.setDateColumnToDtypeDate(GenerateTrainData.hsi_DataFrame_rawData, GenerateTrainData.dax_DataFrame_rawData)
     DaxClose_DataFrame = GenerateTrainData.createDataFrameWithOnlyDaxCloseTimes(dax_DataFrame)
     arrayTrainingData = GenerateTrainData.createArrayTrainingData(DaxClose_DataFrame,hsi_DataFrame,dax_DataFrame)
     features = GenerateTrainData.featureListGeneration(DaxClose_DataFrame,hsi_DataFrame,dax_DataFrame)
     # create TrainingData
     train_data = pd.DataFrame(arrayTrainingData, columns=(features))
-    print(train_data)
-    GenerateTrainData.saveDataFrame(train_data,'D:/Profiles/fuhlmann/Programmierung/python/zz_boersendaten/Boersendaten/Fruehstueck_training_data.csv')
+    GenerateTrainData.saveDataFrame(train_data,'D:/Profiles/fuhlmann/Programmierung/python/boerse_DataScience_project/Boersendaten/Fruehstueck_training_data.csv')
 
 main()

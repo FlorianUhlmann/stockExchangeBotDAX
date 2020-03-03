@@ -50,21 +50,49 @@ for hh in range(0, 9):
             oh = oh[oh.time != "0%d:%d" % (hh, mm)]
 
 # """
-for hh in range(11, 24):
+
+
+for hh in range(9, 10):
+    for mm in range(1, 60):
+        mm_digits = len(str(mm))
+        if mm_digits < 2:
+            oh = oh[oh.time != "0%d:0%d" % (hh, mm)]
+        else:
+            oh = oh[oh.time != "0%d:%d" % (hh, mm)]
+
+
+for hh in range(10, 12):
+    for mm in range(1, 60):
+        mm_digits = len(str(mm))
+        if mm_digits < 2:
+            oh = oh[oh.time != "%d:0%d" % (hh, mm)]
+        else:
+            oh = oh[oh.time != "%d:%d" % (hh, mm)]
+
+
+
+for hh in range(12, 24):
     for mm in range(0, 60):
         mm_digits = len(str(mm))
         if mm==59 and hh==22:
             continue
-        elif mm==00 and hh==11:
+        elif mm==00 and hh==12:
             continue
         elif mm_digits < 2:
             oh = oh[oh.time != "%d:0%d" % (hh, mm)]
         else:
             oh = oh[oh.time != "%d:%d" % (hh, mm)]
 # """
-oh.head(1000)
-print(oh)
+#drop rows with 11:00 o clock in it
+oh = oh[oh.time != '11:00']
+
+#drop not needed columns
+oh.drop(columns=['open','high','low','volume'],inplace=True)
+#oh.drop(oh.columns[[0]], axis=1,inplace=True)
+#reset the index to (0,1,2,3,4.....) and drop the old index ( 1,3,5,7.....)
+oh.reset_index(inplace=True,drop=True)
+#save the new dataframe
 oh.to_csv(
-    'D:/Profiles/fuhlmann/Programmierung/python/zz_boersendaten/Boersendaten/DAX30_TimeFrameMin_M1_CandleData_Cleaned_Just_Market_Time_from_CLOSE_to11am_GTM+1.csv',
+    'D:/Profiles/fuhlmann/Programmierung/python/zz_boersendaten/Boersendaten/DAX30_TimeFrameMin_M1_CandleData_Cleaned_Just_Market_Time_from_CLOSE_to9am_plus_11am_GTM+1.csv',
     sep=';')
 

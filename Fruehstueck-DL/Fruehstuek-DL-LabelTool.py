@@ -18,14 +18,16 @@ oh = pd.read_csv('D:/Profiles/fuhlmann/Programmierung/python/zz_boersendaten/Boe
 
 # print(oh);
 
-print(oh.columns);
+# print(oh.columns);
 oh.drop(['Unnamed: 0','open','high','low','volume'],inplace = True, axis=1)
-print(oh.columns)
-print(oh.head(100))
+# print(oh.columns)
+print(oh)
 
-oh.to_csv(
-    'D:/Profiles/fuhlmann/Programmierung/python/zz_boersendaten/Boersendaten/DAX30_TimeFrameMin_M1_CandleData_Cleaned_Just_date_time_close.csv',
-    sep=';')
+
+
+# oh.to_csv(
+#     'D:/Profiles/fuhlmann/Programmierung/python/zz_boersendaten/Boersendaten/DAX30_TimeFrameMin_M1_CandleData_Cleaned_Just_date_time_close.csv',
+#     sep=';')
 """
          date   time    close
 0  2019.01.02  22:59  10575.2

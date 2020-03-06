@@ -99,13 +99,14 @@ class LearningDataAssembly:
 
 def main():
 
-    GenerateTrainData = LearningDataAssembly('D:/Profiles/fuhlmann/Programmierung/python/boerse_DataScience_project/Boersendaten/HAN_SENG_data/HSI_M1_2019/HSI_M1_2019_DemoDF_for_TDD.csv','D:/Profiles/fuhlmann/Programmierung/python/boerse_DataScience_project/Boersendaten/DAX_data/DAX_M1_2019/DAX_M1_2019_DemoDF_for_TDD.csv')
+    #GenerateTrainData = LearningDataAssembly('D:/Profiles/fuhlmann/Programmierung/python/boerse_DataScience_project/Boersendaten/HAN_SENG_data/HSI_M1_2019/HSI_M1_2019_DemoDF_for_TDD.csv','D:/Profiles/fuhlmann/Programmierung/python/boerse_DataScience_project/Boersendaten/DAX_data/DAX_M1_2019/DAX_M1_2019_only_Close_values_UTC-5_test.csv')
+    GenerateTrainData = LearningDataAssembly('D:/Profiles/fuhlmann/Programmierung/python/boerse_DataScience_project/Boersendaten/HAN_SENG_data/HSI_M1_2019/HSI_M1_2019_only_close_values.csv','D:/Profiles/fuhlmann/Programmierung/python/boerse_DataScience_project/Boersendaten/DAX_data/DAX_M1_2019/DAX_M1_2019_only_Close_values_january.csv')
     (hsi_DataFrame,dax_DataFrame)= GenerateTrainData.setDateColumnToDtypeDate(GenerateTrainData.hsi_DataFrame_rawData, GenerateTrainData.dax_DataFrame_rawData)
     DaxClose_DataFrame = GenerateTrainData.createDataFrameWithOnlyDaxCloseTimes(dax_DataFrame)
     arrayTrainingData = GenerateTrainData.createArrayTrainingData(DaxClose_DataFrame,hsi_DataFrame,dax_DataFrame)
     features = GenerateTrainData.featureListGeneration(DaxClose_DataFrame,hsi_DataFrame,dax_DataFrame)
     # create TrainingData
     train_data = pd.DataFrame(arrayTrainingData, columns=(features))
-    GenerateTrainData.saveDataFrame(train_data,'D:/Profiles/fuhlmann/Programmierung/python/boerse_DataScience_project/Boersendaten/Fruehstueck_training_data.csv')
+    GenerateTrainData.saveDataFrame(train_data,'D:/Profiles/fuhlmann/Programmierung/python/boerse_DataScience_project/Boersendaten/Fruehstueck_training_data_2019_january.csv')
 
 main()

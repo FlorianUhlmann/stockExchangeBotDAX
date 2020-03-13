@@ -1,9 +1,10 @@
+import os
 import unittest
 import pandas as pd
 from pandas.util.testing import assert_frame_equal
 import numpy as np
 from datetime import datetime, time
-
+from Fruehstueck_DL_DataPreparation_createOutputLabels import OutputDataGenerator as ODG
 
 class CreateOutputLabelTest(unittest.TestCase):
 
@@ -81,20 +82,28 @@ class CreateOutputLabelTest(unittest.TestCase):
 
         self.features = createFeatures()
         self.inputData = pd.DataFrame(self.traidingDays,columns=self.features)
-        self.outputData = pd.DataFrame([[1,0,0],[0,1,0],[0,0,1],[0,0,1]], columns= ['buyDay','sellDay','noTradeDay'])
+        self.outputData = pd.DataFrame([[1,0,0],[0,1,0],[0,0,1],[0,0,1]], columns= ['DAX_BUY_DAY','DAX_SELL_DAY','NO_TRADE_DAY'])
 
         self.SOLLDataFrame = pd.concat([self.inputData,self.outputData],axis=1)
 
+        dirnamePath = os.path.dirname(os.path.abspath(__file__))
+        DataFrameSavePath = os.path.join(dirnamePath, 'Fruehstueck_DL_DataPreparation_createOutputLabels_TDD_TestDataFrame_inputData.csv')
+        self.inputData.to_csv(DataFrameSavePath, index=False)
+
+    def test_OutputLabelsCorrectCreatedWithDataFrameWithOneDataRow(self):
+
+        dirname = os.path.dirname(os.path.abspath(__file__))
+        DataFramefilename = os.path.join(dirname,'Fruehstueck_DL_DataPreparation_createOutputLabels_TDD_TestDataFrame_inputData.csv')
 
 
-    def test_OutputLabelsCorrectCreated(self):
+        output = ODG(DataFramefilename)
 
+        ISTDataFrame = output.createOutputDataFrame(output.DataFrame_input)
 
-        ISTDataFrame = pd.DataFrame()
+        print(ISTDataFrame)
+        print(self.SOLLDataFrame)
 
-
-
-        assert_frame_equal(ISTDataFrame, self.SOLLDataFrame, check_column_type=False, check_frame_type=False,check_index_type=False)
+        assert_frame_equal(ISTDataFrame, self.SOLLDataFrame, check_column_type=False, check_frame_type=False,check_index_type=Fa,check_dtype=False)
 
 
 

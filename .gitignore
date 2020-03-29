@@ -1,2 +1,5 @@
 **/Boersendaten
 *.cache
+**/.idea
+**/.cache
+Fruehstueck-DL

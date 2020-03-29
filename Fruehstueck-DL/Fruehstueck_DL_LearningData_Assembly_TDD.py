@@ -7,7 +7,6 @@ import os
 from Fruehstueck_DL_LearningData_Assembly import LearningDataAssembly as LDA
 
 
-
 class LearningDataAssembly(unittest.TestCase):
 
     def testForConcatinationOfHsiAndDaxData(self):
@@ -150,7 +149,7 @@ class LearningDataAssembly(unittest.TestCase):
 
         ISTDataFrame = pd.DataFrame()
         SollDataFrame = Generate_SollDataFrame(self)
-
+        print(SollDataFrame)
         Dax_DataFrameRaw = GenerateDAXDataFrameRaw(self)
         #print(Dax_DataFrameRaw)
         dirname = os.path.dirname(os.path.abspath(__file__))

@@ -1,5 +1,5 @@
 **/Boersendaten
-*.cache
-**/.idea
-**/.cache
-Fruehstueck-DL
+.cache/
+.idea/
+**/Fruehstueck-DL/FruehstuecksBot-DL/.cache
+FruehstuecksBot-DL/

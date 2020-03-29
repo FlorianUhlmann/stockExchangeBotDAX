@@ -6,7 +6,7 @@ pd.set_option('display.max_row', 10)
 
 
 
-class DataPreparation:
+class DataPreparationDAX:
     def __init__(self,inputFile):
         self.inputFile = inputFile
         # self.df = pd.read_csv(self.inputFile,sep=';')
@@ -18,7 +18,7 @@ class DataPreparation:
         print(self.dataFrame)
 
     def removeDataInTimerange(self,stockData):
-
+        #JAN würde die "remove all times" nochmal zerkleinern
         #TODO überarbeiten mit "loc" methode
         #filter
         #   df_filtered2015 = df.loc[df['time']== '20:15']
@@ -29,7 +29,8 @@ class DataPreparation:
         #   df.sort_index()
         df= stockData
 
-        #remove all times from 00:00 - 1:59 h
+        #remove all times from 00:00 - 1:59 h ## variablen ausschreiben!!!!!!!
+        #JAN guter code ist auf einem Notebook screen lesbar
         for h in range(0, 2):
             for m in range(0, 60):
                 t = time(h, m)
@@ -48,9 +49,9 @@ class DataPreparation:
 
                 df = df.loc[df['time'] != str(time_convert)]
         StockDataProcessed = df
-        return StockDataProcessed
+        return StockDataProcessed   #jan hat sich gefragt was stockdataProcesses ist, weglassen.
 
-    def removeColumns(self,stockData):
+    def removeColumns(self,stockData):#function name umbennen
 
         # drop not needed columns
         stockData.drop(columns=['open', 'high', 'low', 'volume'], inplace=True)
@@ -77,16 +78,22 @@ class DataPreparation:
 
 def main():
 
-    # DFtoPrepare = DataPreparation('D:/Profiles/fuhlmann/Programmierung/Python/boerse_DataScience_project/Boersendaten/DAX30_TimeFrameMin_M1_CandleData_Raw.csv')
-    DFtoPrepare = DataPreparation('D:/Profiles/fuhlmann/Programmierung/Python/boerse_DataScience_project/Boersendaten/DAX_data/DAX_M1_2019/DAX_M1_2019.csv')
+    DataFramePath = 'D:/Profiles/fuhlmann/Programmierung/Python/boerse_DataScience_project/Boersendaten/DAX_data/DAX_M1_2019/DAX_M1_2019.csv'
+    #performance gedanke, Erst columns dann rows deleten oder umgekehert -> timewatch messung
+    #python linter  variablen klein schreiben - bekomme den linter zum laufen
+    # python CONVENTIONEN einhalten!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    # DFtoPrepare = DataPreparationDAX('D:/Profiles/fuhlmann/Programmierung/Python/boerse_DataScience_project/Boersendaten/DAX30_TimeFrameMin_M1_CandleData_Raw.csv')
+    # JAN performance gedanken, überlegen aus der tehorie heraus warum so einen best. code aufrauf und nciht anders.
+    DFtoPrepare = DataPreparationDAX(DataFramePath)
     # DFtoPrepare.dataframe
     DFtoPrepare.showDataFrame()
-    DFtoPrepare.dataFrame = DFtoPrepare.removeDataInTimerange(DFtoPrepare.dataFrame)
-    DFtoPrepare.dataFrame = DFtoPrepare.removeColumns(DFtoPrepare.dataFrame)
-    DFtoPrepare.dataFrame = DFtoPrepare.setCloseColumnToFloat(DFtoPrepare.dataFrame)
+    DFtoPrepare.dataFrame = DFtoPrepare.removeDataInTimerange(DFtoPrepare.dataFrame)#gebe parameter Zeitrange mit an
+    DFtoPrepare.dataFrame = DFtoPrepare.removeColumns(DFtoPrepare.dataFrame)#keepNecessaryColumns
+    DFtoPrepare.dataFrame = DFtoPrepare.setCloseColumnToFloat(DFtoPrepare.dataFrame)#gut, weil weis was passiert
     DFtoPrepare.saveDataFrame(DFtoPrepare.dataFrame,'D:/Profiles/fuhlmann/Programmierung/python/boerse_DataScience_project/Boersendaten/DAX_data/DAX_M1_2019/DAX_M1_2019_only_Close_values_UTC-5_test.csv')
     print(DFtoPrepare.dataFrame.dtypes)
     DFtoPrepare.jobDone()
+
 main()
 
 

@@ -103,12 +103,17 @@ class CreateOutputLabelTest(unittest.TestCase):
         print(ISTDataFrame)
         print(self.SOLLDataFrame)
 
-        assert_frame_equal(ISTDataFrame, self.SOLLDataFrame, check_column_type=False, check_frame_type=False,check_index_type=Fa,check_dtype=False)
+        assert_frame_equal(ISTDataFrame, self.SOLLDataFrame, check_column_type=False, check_frame_type=False,check_index_type=True,check_dtype=False)
 
 
 
     def tearDown(self):
         super(CreateOutputLabelTest, self).tearDown()
         self.mock_data = []
+
+        dirnamePath = os.path.dirname(os.path.abspath(__file__))
+        DataFramePathForDeletion = os.path.join(dirnamePath,'Fruehstueck_DL_DataPreparation_createOutputLabels_TDD_TestDataFrame_inputData.csv')
+        os.remove(DataFramePathForDeletion)
+
 if __name__ == '__main__':
     unittest.main()

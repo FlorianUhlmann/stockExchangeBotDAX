@@ -3,7 +3,7 @@ import pandas as pd
 from pandas.util.testing import assert_frame_equal
 import datetime as h
 
-from Fruehstuek_DL_DataPreparation_for_DAX_v1_1 import DataPreparation
+from Fruehstueck_DL_DataPreparation_for_DAX_v1_1 import DataPreparation
 
 class TestDataPreparation(unittest.TestCase):
 
@@ -22,7 +22,7 @@ class TestDataPreparation(unittest.TestCase):
 
     def testForColumnCut(self):
 
-        IISTDataFrame = pd.DataFrame()
+        ISTDataFrame = pd.DataFrame()
         SollDataFrame = pd.DataFrame({'date':[h.date(2019,1,2),h.date(2019,1,2),h.date(2019,1,2),h.date(2019,1,2),h.date(2019,1,3),h.date(2019,1,3),h.date(2019,1,3),h.date(2019,1,4),h.date(2019,1,4)],
                                         'time': [h.time(22,59),h.time(9,00),h.time(10),h.time(12),h.time(22,59),h.time(9,00),h.time(10),h.time(12),h.time(22,59)],
                                         'close':[1000.0,1200.0,1400.0,1600.0,1000.0,1200.0,1400.0,1600.0,1000.0]})

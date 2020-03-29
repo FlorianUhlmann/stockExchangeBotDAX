@@ -1,7 +1,7 @@
 import numpy as np
 import pandas as pd
 from datetime import datetime, time, timedelta
-
+# überlegen alle hardcoded werte in paramterliste zu schreiben
 
 class OutputDataGenerator():
     def __init__(self, DataFrameLocation):
@@ -15,8 +15,9 @@ class OutputDataGenerator():
         print(self.DataFrame_input.info())
 
     def createOutputDataFrame(self, dataFrameRaw):
-
+        #gucken ob unterfunktionen anders aufbaubar sind - python knwoledge
         def sliceRawDataToRelevantDAXData(dataFrame):
+            #hardocded numbers in variablen namen ändern
             DAXbegin = dataFrame.iloc[:, 182:184]
             DAXend = dataFrame.iloc[:, 242:]
             relevantDaxData = pd.concat([DAXbegin, DAXend], axis=1)
@@ -60,11 +61,7 @@ class OutputDataGenerator():
                 else:
                     NO_TRADE_DAY = 1
 
-                print('stockExchangeDays ' + str(stockExchangeDay))
-                print('TradeMade ' + str(TradeMade))
-                print('TradeSuccess ' + str(Tradesuccess))
-                print('TradeFail ' + str(TradeFail))
-                print()
+
 
                 f = pd.Series(np.array([DAX_BUY_DAY, DAX_SELL_DAY, NO_TRADE_DAY]), index=('DAX_BUY_DAY', 'DAX_SELL_DAY', 'NO_TRADE_DAY'))
                 DataFrame_TraidingAdvice = DataFrame_TraidingAdvice.append(f, ignore_index=True, sort=True)
@@ -72,6 +69,12 @@ class OutputDataGenerator():
                 DAX_BUY_DAY = 0
                 DAX_SELL_DAY = 0
                 NO_TRADE_DAY = 0
+
+            print('stockExchangeDays ' + str(stockExchangeDay))
+            print('TradeMade ' + str(TradeMade))
+            print('TradeSuccess ' + str(Tradesuccess))
+            print('TradeFail ' + str(TradeFail))
+            print()
 
             return DataFrame_TraidingAdvice
         def mergeInputAndOutputDataFrame(dataframeRaw, outputDataFrame):
@@ -96,6 +99,7 @@ def main():
 
     createOutput = OutputDataGenerator(pathDataFrame)
     trainingDataFrame = createOutput.createOutputDataFrame(createOutput.DataFrame_input)
+    #trainingDataFrame  als Property in classe speichern.
     createOutput.saveDataFrame(trainingDataFrame,pathSaveDataFrame)
 
 main()

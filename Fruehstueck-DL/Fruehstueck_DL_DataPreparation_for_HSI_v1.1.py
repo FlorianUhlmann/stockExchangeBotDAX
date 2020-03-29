@@ -6,7 +6,7 @@ pd.set_option('display.max_row', 10)
 
 
 
-class HsiDataPreparation:
+class DataPreparationHSI:
     def __init__(self,inputFile):
         self.inputFile = inputFile
         # self.df = pd.read_csv(self.inputFile,sep=';')
@@ -64,8 +64,8 @@ class HsiDataPreparation:
 
 def main():
 
-    # DFtoPrepare = HsiDataPreparation('D:/Profiles/fuhlmann/Programmierung/Python/boerse_DataScience_project/Boersendaten/DAX30_TimeFrameMin_M1_CandleData_Raw.csv')
-    DFtoPrepare = HsiDataPreparation('D:/Profiles/fuhlmann/Programmierung/Python/boerse_DataScience_project/Boersendaten/HAN_SENG_data/HSI_M1_2019/HSI_M1_2019.csv')
+    # DFtoPrepare = DataPreparationHSI('D:/Profiles/fuhlmann/Programmierung/Python/boerse_DataScience_project/Boersendaten/DAX30_TimeFrameMin_M1_CandleData_Raw.csv')
+    DFtoPrepare = DataPreparationHSI('D:/Profiles/fuhlmann/Programmierung/Python/boerse_DataScience_project/Boersendaten/HAN_SENG_data/HSI_M1_2019/HSI_M1_2019.csv')
     # DFtoPrepare.dataframe
     DFtoPrepare.showDataFrame()
     DFtoPrepare.dataFrame = DFtoPrepare.removeDataInTimerange(DFtoPrepare.dataFrame)

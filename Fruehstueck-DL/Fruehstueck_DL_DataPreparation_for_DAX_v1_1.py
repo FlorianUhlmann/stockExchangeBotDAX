@@ -1,14 +1,14 @@
+from datetime import time
 import pandas as pd
-from datetime import datetime, time
 # Set ipython's max row display
 pd.set_option('display.max_row', 10)
 
 
-
-
 class DataPreparationDAX:
-    def __init__(self,inputFile):
-        self.inputFile = inputFile
+    dataFrame = None
+
+    def __init__(self, pathInputFile):
+        self.inputFile = pathInputFile
         # self.df = pd.read_csv(self.inputFile,sep=';')
         # print(self.inputFile)
         self.dataFrame = pd.read_csv(self.inputFile, sep=',')
@@ -17,83 +17,74 @@ class DataPreparationDAX:
     def showDataFrame(self):
         print(self.dataFrame)
 
-    def removeDataInTimerange(self,stockData):
-        #JAN würde die "remove all times" nochmal zerkleinern
-        #TODO überarbeiten mit "loc" methode
-        #filter
-        #   df_filtered2015 = df.loc[df['time']== '20:15']
-        #   df_filtered2016 = df.loc[df['time']== '20:16']
-        # Concat all df
-        #   -> df.concat([df1, df2, df3 , .....])
-        # set index in correct order
-        #   df.sort_index()
-        df= stockData
+    def formatDataFrame(self):
 
-        #remove all times from 00:00 - 1:59 h ## variablen ausschreiben!!!!!!!
-        #JAN guter code ist auf einem Notebook screen lesbar
-        for h in range(0, 2):
-            for m in range(0, 60):
-                t = time(h, m)
-                time_convert = t.strftime("%H:%M")
+        def dropUnwantedTradingTimes():
+            # JAN würde die "remove all times" nochmal zerkleinern
 
-                df = df.loc[df['time'] != str(time_convert)]
+            df = self.dataFrame
 
-        #remove all times from 5:01 -13:58 ; 14:00 - 00:00
-        for h in range(5, 24):
-            for m in range(0, 60):
-                if (h == 5 and m == 0) or (h==13 and m == 59):
-                    continue
+            # remove all times from 00:00 - 1:59 h ## variablen ausschreiben!!!!!!!
+            # JAN guter code ist auf einem Notebook screen lesbar
+            for h in range(0, 2):
+                for m in range(0, 60):
+                    t = time(h, m)
+                    time_convert = t.strftime("%H:%M")
 
-                t = time(h, m)
-                time_convert = t.strftime("%H:%M")
+                    df = df.loc[df['time'] != str(time_convert)]
 
-                df = df.loc[df['time'] != str(time_convert)]
-        StockDataProcessed = df
-        return StockDataProcessed   #jan hat sich gefragt was stockdataProcesses ist, weglassen.
+            # remove all times from 5:01 -13:58 ; 14:00 - 00:00
+            for h in range(5, 24):
+                for m in range(0, 60):
+                    if (h == 5 and m == 0) or (h == 13 and m == 59):
+                        continue
 
-    def removeColumns(self,stockData):#function name umbennen
+                    t = time(h, m)
+                    time_convert = t.strftime("%H:%M")
 
-        # drop not needed columns
-        stockData.drop(columns=['open', 'high', 'low', 'volume'], inplace=True)
-        # oh.drop(oh.columns[[0]], axis=1,inplace=True)
-        # reset the index to (0,1,2,3,4.....) and drop the old index ( 1,3,5,7.....)
-        stockData.reset_index(inplace=True, drop=True)
+                    df = df.loc[df['time'] != str(time_convert)]
 
-        return stockData
-    
-    def setCloseColumnToFloat(self,stockData):
+            self.dataFrame = df
+        def keepOnlyColumnsDateTimeClose():  # function name umbennen
 
-        stockData['close'] =  stockData['close'].astype(float)
-        return stockData
+            # drop not needed columns
+            self.dataFrame.drop(columns=['open', 'high', 'low', 'volume'], inplace=True)
+            # reset the index to (0,1,2,3,4.....) and drop the old index ( 1,3,5,7.....)
+            self.dataFrame.reset_index(inplace=True, drop=True)
 
-    def saveDataFrame(self,stockData,placeToSave):
+        def setColumnCloseToFloat():
+            # TODO '{:06.2f}'.format(3.141592653589793) format to float with one digit after point 002.X
+            self.dataFrame['close'] = self.dataFrame['close'].astype(float)
+        dropUnwantedTradingTimes()
+        keepOnlyColumnsDateTimeClose()
+        setColumnCloseToFloat()
 
-        stockData.to_csv(str(placeToSave),sep=',')
+        return self.dataFrame
+    @classmethod
+    def saveDataFrame(cls, stockData, pathToSave):
+        def jobDoneMsg(pathToSave):
+            print()
+            print()
+            print('Job Done')
+            print('DataFrame saved under' + pathToSave)
+            print()
 
-    def jobDone(self):
-        print()
-        print()
-        print('Job Done')
-        print()
+        stockData.to_csv(str(pathToSave), sep=',')
+
+        jobDoneMsg(pathToSave)
+
+
 
 def main():
 
-    DataFramePath = 'D:/Profiles/fuhlmann/Programmierung/Python/boerse_DataScience_project/Boersendaten/DAX_data/DAX_M1_2019/DAX_M1_2019.csv'
-    #performance gedanke, Erst columns dann rows deleten oder umgekehert -> timewatch messung
-    #python linter  variablen klein schreiben - bekomme den linter zum laufen
-    # python CONVENTIONEN einhalten!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    # DFtoPrepare = DataPreparationDAX('D:/Profiles/fuhlmann/Programmierung/Python/boerse_DataScience_project/Boersendaten/DAX30_TimeFrameMin_M1_CandleData_Raw.csv')
+    pathRawDataFrameDAX = 'D:/Profiles/fuhlmann/Programmierung/Python/boerse_DataScience_project/Boersendaten/DAX_data/DAX_M1_2019/DAX_M1_2019.csv'
+    savingpathFormatedDataFrame = 'D:/Profiles/fuhlmann/Programmierung/python/boerse_DataScience_project/Boersendaten/DAX_data/DAX_M1_2019/DAX_M1_2019_only_Close_values_UTC-5_test.csv'
+    # performance gedanke, Erst columns dann rows deleten oder umgekehert -> timewatch messung
     # JAN performance gedanken, überlegen aus der tehorie heraus warum so einen best. code aufrauf und nciht anders.
-    DFtoPrepare = DataPreparationDAX(DataFramePath)
-    # DFtoPrepare.dataframe
+    DFtoPrepare = DataPreparationDAX(pathRawDataFrameDAX)
     DFtoPrepare.showDataFrame()
-    DFtoPrepare.dataFrame = DFtoPrepare.removeDataInTimerange(DFtoPrepare.dataFrame)#gebe parameter Zeitrange mit an
-    DFtoPrepare.dataFrame = DFtoPrepare.removeColumns(DFtoPrepare.dataFrame)#keepNecessaryColumns
-    DFtoPrepare.dataFrame = DFtoPrepare.setCloseColumnToFloat(DFtoPrepare.dataFrame)#gut, weil weis was passiert
-    DFtoPrepare.saveDataFrame(DFtoPrepare.dataFrame,'D:/Profiles/fuhlmann/Programmierung/python/boerse_DataScience_project/Boersendaten/DAX_data/DAX_M1_2019/DAX_M1_2019_only_Close_values_UTC-5_test.csv')
-    print(DFtoPrepare.dataFrame.dtypes)
-    DFtoPrepare.jobDone()
+    formatedDataFrame = DFtoPrepare.formatDataFrame()
+    DFtoPrepare.saveDataFrame(formatedDataFrame, savingpathFormatedDataFrame)
+    print(formatedDataFrame)
 
 main()
-
-

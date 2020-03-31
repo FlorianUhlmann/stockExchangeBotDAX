@@ -164,13 +164,13 @@ class LearningDataAssembly(unittest.TestCase):
 
         CreateSOLLDataFrame = LDA(HSIfilename,DAXfilename)
         CreateSOLLDataFrame.showDataFrameRaw()
-        (hsi_DataFrame, dax_DataFrame) = CreateSOLLDataFrame.setDateColumnToDtypeDate(
-        CreateSOLLDataFrame.hsi_DataFrame_rawData, CreateSOLLDataFrame.dax_DataFrame_rawData)
-        DaxClose_DataFrame = CreateSOLLDataFrame.createDataFrameWithOnlyDaxCloseTimes(dax_DataFrame)
-        arrayTrainingData = CreateSOLLDataFrame.createArrayTrainingData(DaxClose_DataFrame, hsi_DataFrame, dax_DataFrame)
-        features = CreateSOLLDataFrame.featureListGeneration(DaxClose_DataFrame, hsi_DataFrame, dax_DataFrame)
+        #(hsi_DataFrame, dax_DataFrame) = CreateSOLLDataFrame.setDateColumnToDtypeDate(
+       #CreateSOLLDataFrame.hsi_DataFrame_rawData, CreateSOLLDataFrame.dax_DataFrame_rawData)
+        #DaxClose_DataFrame = CreateSOLLDataFrame.createDataFrameWithOnlyDaxCloseTimes(dax_DataFrame)
+        #arrayTrainingData = CreateSOLLDataFrame.createArrayTrainingData( hsi_DataFrame, dax_DataFrame)
+        #features = CreateSOLLDataFrame.featureListGeneration(hsi_DataFrame, dax_DataFrame)
         # create TrainingData
-        ISTDataFrame = pd.DataFrame(arrayTrainingData, columns=(features))
+        ISTDataFrame = CreateSOLLDataFrame.createTrainingdataDataFrame(CreateSOLLDataFrame.hsi_DataFrame_rawData, CreateSOLLDataFrame.dax_DataFrame_rawData)
 
         Dax_DataFrameRaw = GenerateDAXDataFrameRaw(self)
 

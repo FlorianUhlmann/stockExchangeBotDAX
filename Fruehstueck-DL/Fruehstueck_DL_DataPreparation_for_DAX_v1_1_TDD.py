@@ -2,8 +2,8 @@ import unittest
 import pandas as pd
 from pandas.util.testing import assert_frame_equal
 import datetime as h
-
 from Fruehstueck_DL_DataPreparation_for_DAX_v1_1 import DataPreparationDAX
+
 
 class TestDataPreparation(unittest.TestCase):
 

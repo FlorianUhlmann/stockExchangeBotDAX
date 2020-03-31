@@ -9,8 +9,6 @@ class DataPreparationDAX:
 
     def __init__(self, pathInputFile):
         self.inputFile = pathInputFile
-        # self.df = pd.read_csv(self.inputFile,sep=';')
-        # print(self.inputFile)
         self.dataFrame = pd.read_csv(self.inputFile, sep=',')
 
 
@@ -51,10 +49,9 @@ class DataPreparationDAX:
             self.dataFrame.drop(columns=['open', 'high', 'low', 'volume'], inplace=True)
             # reset the index to (0,1,2,3,4.....) and drop the old index ( 1,3,5,7.....)
             self.dataFrame.reset_index(inplace=True, drop=True)
-
         def setColumnCloseToFloat():
-            # TODO '{:06.2f}'.format(3.141592653589793) format to float with one digit after point 002.X
             self.dataFrame['close'] = self.dataFrame['close'].astype(float)
+
         dropUnwantedTradingTimes()
         keepOnlyColumnsDateTimeClose()
         setColumnCloseToFloat()
@@ -78,13 +75,12 @@ class DataPreparationDAX:
 def main():
 
     pathRawDataFrameDAX = 'D:/Profiles/fuhlmann/Programmierung/Python/boerse_DataScience_project/Boersendaten/DAX_data/DAX_M1_2019/DAX_M1_2019.csv'
-    savingpathFormatedDataFrame = 'D:/Profiles/fuhlmann/Programmierung/python/boerse_DataScience_project/Boersendaten/DAX_data/DAX_M1_2019/DAX_M1_2019_only_Close_values_UTC-5_test.csv'
+    savingpathFormatedDataFrameDAX = 'D:/Profiles/fuhlmann/Programmierung/python/boerse_DataScience_project/Boersendaten/DAX_data/DAX_M1_2019/DAX_M1_2019_only_Close_values_UTC-5_test.csv'
     # performance gedanke, Erst columns dann rows deleten oder umgekehert -> timewatch messung
     # JAN performance gedanken, überlegen aus der tehorie heraus warum so einen best. code aufrauf und nciht anders.
     DFtoPrepare = DataPreparationDAX(pathRawDataFrameDAX)
-    DFtoPrepare.showDataFrame()
+
     formatedDataFrame = DFtoPrepare.formatDataFrame()
-    DFtoPrepare.saveDataFrame(formatedDataFrame, savingpathFormatedDataFrame)
-    print(formatedDataFrame)
+    DFtoPrepare.saveDataFrame(formatedDataFrame, savingpathFormatedDataFrameDAX)
 
 main()

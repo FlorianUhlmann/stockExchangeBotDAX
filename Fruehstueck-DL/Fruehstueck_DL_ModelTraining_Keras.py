@@ -3,9 +3,14 @@ from keras.models import Sequential
 from keras.layers import Dense
 from keras.layers import Dropout
 from keras.utils import np_utils
+from keras.preprocessing.text import Tokenizer
 import mlflow.keras
 import pandas as pd
 import numpy as np
+# The following import and function call are the only additions to code required
+# to automatically log metrics and parameters to MLflow.
+import mlflow.keras
+mlflow.keras.autolog()
 from sklearn.model_selection import train_test_split
 # load data
 stockData = pd.read_csv('D:/Profiles/fuhlmann/Programmierung/Python/boerse_DataScience_project/Fruehstueck-DL/DataFrameTrainingDataForAI_2019_january.csv')
@@ -23,7 +28,7 @@ model.add(Dense(units=200, activation='relu', input_dim=363))
 model.add(Dense(units=50, activation='relu'))
 model.add(Dense(units=3, activation='softmax'))
 #configure model learning process
-model.compile(loss='categorical_crossentropy',optimizer='sgd',metrics=['accuracy'])
+model.compile(loss='mean_squared_error',optimizer='sgd',metrics=['accuracy'])
 
 #train model
 model.fit(X_train, y_train, epochs=5, batch_size=3)

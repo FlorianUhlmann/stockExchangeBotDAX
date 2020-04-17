@@ -1,0 +1,15 @@
+artifact_uri: file:///D:/Profiles/fuhlmann/Programmierung/Python/boerse_DataScience_project/Fruehstueck-DL/mlruns/0/9b7023a8ed1d47bd87a134a6a3ec0f15/artifacts
+end_time: 1587115364623
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+name: ''
+run_id: 9b7023a8ed1d47bd87a134a6a3ec0f15
+run_uuid: 9b7023a8ed1d47bd87a134a6a3ec0f15
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1587115362590
+status: 3
+tags: []
+user_id: fuhlmann

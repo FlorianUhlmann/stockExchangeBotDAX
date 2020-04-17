@@ -1,6 +1,6 @@
 import numpy as np
 import pandas as pd
-from datetime import datetime, time, timedelta
+from datetime import time, timedelta
 
 
 class LearningDataAssembly:
@@ -11,15 +11,16 @@ class LearningDataAssembly:
     The shape of the Dataframe ist (a x 437) - a = one traiding day | 437 amount of features
     """
     
-    def __init__(self,HSI_DataFrame,DAX_DataFrame):
+    def __init__(self, HSI_DataFrame, DAX_DataFrame):
         self.HSI_DataFrame = HSI_DataFrame
         self.DAX_DataFrame = DAX_DataFrame
-        self.hsi_DataFrame_rawData = pd.read_csv(self.HSI_DataFrame, sep= ',')
-        self.dax_DataFrame_rawData = pd.read_csv(self.DAX_DataFrame, sep= ',')
+        self.hsi_DataFrame_rawData = pd.read_csv(self.HSI_DataFrame, sep=',')
+        self.dax_DataFrame_rawData = pd.read_csv(self.DAX_DataFrame, sep=',')
 
     def showDataFrameRaw(self):
         print(self.hsi_DataFrame_rawData)
         print(self.dax_DataFrame_rawData)
+
 
     def createTrainingdataDataFrame(self, hsi_DataFrame_rawData, dax_DataFrame_rawData):
 
@@ -37,9 +38,7 @@ class LearningDataAssembly:
             return DAX_Close_only
 
         def createArrayTrainingData(DAX_Close_only, hsi_DataFrame, dax_DataFrame):
-
         
-            array_trainData = []
             array_trainData = []
 
             for DAXClose in range(0, len(DAX_Close_only['date'])):
@@ -113,20 +112,23 @@ class LearningDataAssembly:
         arrayTrainingData= createArrayTrainingData(DAX_Close_only, hsi_DataFrame, dax_DataFrame)
         features = featureListGeneration(hsi_DataFrame, dax_DataFrame)
         
-        return pd.DataFrame(arrayTrainingData, columns=(features))
+        return pd.DataFrame(arrayTrainingData, columns=features)
 
     def saveDataFrame(self, stockData,placeToSave):
 
         stockData.to_csv(str(placeToSave),sep=',')
 
+
 def main():
 
-    pathInputDataDAX ='D:/Profiles/fuhlmann/Programmierung/python/boerse_DataScience_project/Boersendaten/DAX_data/DAX_M1_2019/DAX_M1_2019_only_Close_values_january.csv'
+    pathInputDataDAX = 'D:/Profiles/fuhlmann/Programmierung/python/boerse_DataScience_project/Boersendaten/DAX_data/DAX_M1_2019/DAX_M1_2019_only_Close_values_january.csv'
     pathInputDataHSI = 'D:/Profiles/fuhlmann/Programmierung/python/boerse_DataScience_project/Boersendaten/HAN_SENG_data/HSI_M1_2019/HSI_M1_2019_CLOSE_values.csv'
+    pathSaveOuput = 'D:/Profiles/fuhlmann/Programmierung/python/boerse_DataScience_project/Boersendaten/Fruehstueck_training_data_2019_january.csv'
 
     GenerateTrainData = LearningDataAssembly(pathInputDataHSI, pathInputDataDAX)
     train_data = GenerateTrainData.createTrainingdataDataFrame(GenerateTrainData.hsi_DataFrame_rawData, GenerateTrainData.dax_DataFrame_rawData)
 
-    GenerateTrainData.saveDataFrame(train_data,'D:/Profiles/fuhlmann/Programmierung/python/boerse_DataScience_project/Boersendaten/Fruehstueck_training_data_2019_january.csv')
+    GenerateTrainData.saveDataFrame(train_data, pathSaveOuput)
+
 
 main()

@@ -153,7 +153,7 @@ class LearningDataAssembly(unittest.TestCase):
         ISTDataFrame = pd.DataFrame()
         SollDataFrame = Generate_SollDataFrame(self)
         print(SollDataFrame)
-        '''Dax_DataFrameRaw = GenerateDAXDataFrameRaw(self)
+        Dax_DataFrameRaw = GenerateDAXDataFrameRaw(self)
 
         dirname = os.path.dirname(os.path.abspath(__file__))
         DAXfilename = os.path.join(dirname, 'DAX_DataFrameRaw.csv')
@@ -174,11 +174,11 @@ class LearningDataAssembly(unittest.TestCase):
 
         HSI_DataFrameRaw = GenerateHSIDataFrameRaw(self)
 
-        ISTDataFrame.to_csv("d:\ISTDATAFRAME.csv")'''
+        ISTDataFrame.to_csv("d:\ISTDATAFRAME.csv")
         SollDataFrame.to_csv("d:\SOLLDATAFRAME.csv")
 
-        #assert_frame_equal(ISTDataFrame, SollDataFrame, check_column_type=False, check_frame_type=False,
-          #                 check_index_type=False)
+        assert_frame_equal(ISTDataFrame, SollDataFrame, check_column_type=False, check_frame_type=False,
+                          check_index_type=False)
 
 
 

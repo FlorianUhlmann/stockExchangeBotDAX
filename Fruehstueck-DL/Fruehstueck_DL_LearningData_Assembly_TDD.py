@@ -7,7 +7,87 @@ from pandas.util.testing import assert_frame_equal
 from Fruehstueck_DL_LearningData_Assembly import LearningDataAssembly as LDA
 
 
+
+
 class LearningDataAssembly(unittest.TestCase):
+
+    def setUp(self):
+
+        def createFeatures():
+            self.SOLLDataFrame = pd.DataFrame()
+
+        def Generate_SollDataFrame_10tradingDays_2Weekends(self):
+
+
+
+            def GenerateList_featureHSI(self):
+
+                list_featuresHSI = []
+                for h in range(0, 4):
+                    for m in range(0, 60):
+
+                        t = time(h, m)
+                        time_convert = t.strftime("%H:%M")
+
+                        list_featuresHSI.append("HSI_" + str(time_convert))
+                        if (h == 3 and m >= 29): break
+                for h in range(4, 5):
+                    for m in range(15, 60):
+
+                        t = time(h, m)
+                        time_convert = t.strftime("%H:%M")
+
+                        list_featuresHSI.append("HSI_" + str(time_convert))
+                        if (h == 5): break
+
+                hsiClose = time(5, 0).strftime("%H:%M")
+                list_featuresHSI.append("HSI_" + str(hsiClose))
+
+                return list_featuresHSI
+
+            def GenerateList_featureDAX(self):
+                list_featuresDAX = []
+                list_featuresDAX.append("DAX_close_preday_13:59")
+                for h in range(2, 6):
+                    for m in range(0, 60):
+
+                        t = time(h, m)
+                        time_convert = t.strftime("%H:%M")
+
+                        list_featuresDAX.append("DAX_" + str(time_convert))
+                        if (h == 5): break
+
+                return list_featuresDAX
+
+            def GenerateList_tradingDays(self):
+                tradingDays = np.array(
+                    [['2019-01-10'], ['2020-01-06'], ['2020-01-07'], ['2020-01-08'], ['2020-01-09'], ['2020-01-10'],
+                     ['2020-01-13'], ['2020-01-14'], ['2020-01-15']], dtype=np.datetime64)
+                return tradingDays
+            #generate list for DataFrame
+            list_featuresDAX = GenerateList_featureDAX(self)
+            list_featuresHSI = GenerateList_featureHSI(self)
+            list_tradingDays = GenerateList_tradingDays(self)
+            #create DataFrame
+            df_HSI_UTCminus5 = pd.DataFrame(np.array([range(len(list_featuresHSI)),range(len(list_featuresHSI))]).astype(float),
+                                            columns=list_featuresHSI)
+            df_DAX_UTCminus5 = pd.DataFrame(np.array([range(len(list_featuresDAX))]).astype(float),
+                                            columns=list_featuresDAX)
+            df_tradingDays = pd.DataFrame(list_tradingDays, columns=['tradingDay'])
+            # merge DataFrames
+            df_prefinal = pd.concat([df_tradingDays, df_HSI_UTCminus5, df_DAX_UTCminus5], axis=1)
+            #set traidingDay as index of DataFrame
+            df_HSI_DAX_UTCminus5 = df_prefinal.set_index('tradingDay')
+
+            return df_HSI_DAX_UTCminus5
+
+        super(LearningDataAssembly, self).setUp()
+        self.SOLLDataFrame_3Weeks = Generate_SollDataFrame_10tradingDays_2Weekends(self)
+
+        dirnamePath = os.path.dirname(os.path.abspath(__file__))
+        DataFrameSavePath = os.path.join(dirnamePath,
+                'Fruehstueck_DL_LearningData_Assembly_TDD_DataFrame_10traidingDays_3Weeks_2Weekends.csv')
+        self.SOLLDataFrame_3Weeks.to_csv(DataFrameSavePath, index=True)
 
     def testForConcatinationOfHsiAndDaxData(self):
 

@@ -271,23 +271,30 @@ class LearningDataAssembly(unittest.TestCase):
 
             return pd.concat([df_date, df_time, df_close], axis=1, sort=False)
 
+
         super(LearningDataAssembly, self).setUp()
-        self.SOLLDataFrame_3Weeks = Generate_SollDataFrame_10tradingDays_2Weekends(self)
-
-
-
         dirnamePath = os.path.dirname(os.path.abspath(__file__))
+
+        self.SOLLDataFrame_3Weeks = Generate_SollDataFrame_10tradingDays_2Weekends(self)
         DataFrameSavePath = os.path.join(dirnamePath,
                 'Fruehstueck_DL_LearningData_Assembly_TDD_DataFrame_10traidingDays_3Weeks_2Weekends.csv')
         self.SOLLDataFrame_3Weeks.to_csv(DataFrameSavePath, index=True)
 
-        self.HSIRaw = Generate_HSIDataFrameRaw_10tradingDays_2Weekends(self)
         self.DAXRaw = Generate_DAXDataFrameRaw_10tradingDays_2Weekends(self)
+        DataFrameSavePath_HSIRaw = os.path.join(dirnamePath,'DaxRawData_10traidingDays_3Weeks_2Weekends.csv')
+        self.DAXRaw.to_csv(DataFrameSavePath_HSIRaw, index=True)
 
-        DataFrameSavePath = os.path.join(dirnamePath,'DaxRawData_10traidingDays_3Weeks_2Weekends.csv')
-        self.DAXRaw.to_csv(DataFrameSavePath, index=True)
-        DataFrameSavePath = os.path.join(dirnamePath,'HSIRawData_10traidingDays_3Weeks_2Weekends.csv')
-        self.HSIRaw.to_csv(DataFrameSavePath, index=True)
+        self.HSIRaw = Generate_HSIDataFrameRaw_10tradingDays_2Weekends(self)
+        DataFrameSavePath_DAXRaw = os.path.join(dirnamePath,'HSIRawData_10traidingDays_3Weeks_2Weekends.csv')
+        self.HSIRaw.to_csv(DataFrameSavePath_DAXRaw, index=True)
+
+    def testTakeRawDataFromDAXandHSIandAssembleLearningData_10tradingDays_2Weekends(self):
+
+        SOLLDataFrame = pd.DataFrame()
+        ISTDataFrame = pd.DataFrame()
+
+
+
 
     def testForConcatinationOfHsiAndDaxData(self):
 
@@ -460,7 +467,21 @@ class LearningDataAssembly(unittest.TestCase):
         assert_frame_equal(ISTDataFrame, SollDataFrame, check_column_type=False, check_frame_type=False,
                           check_index_type=False)
 
+        def tearDown(self):
 
+            super(LearningDataAssembly,self).tearDown()
+
+            dirnamePath = os.path.dirname(os.path.abspath(__file__))
+
+            pathDataFrameForDeletion0 = os.path.join(dirnamePath,'Fruehstueck_DL_DataPreparation_createOutputLabels_TDD_TestDataFrame_inputData.csv')
+            pathDataFrameForDeletion1 = os.path.join(dirnamePath, 'Fruehstueck_DL_LearningData_Assembly_TDD_DataFrame_10traidingDays_3Weeks_2Weekends.csv')
+            pathDataFrameForDeletion2 = os.path.join(dirnamePath, 'DaxRawData_10traidingDays_3Weeks_2Weekends.csv')
+            pathDataFrameForDeletion3 = os.path.join(dirnamePath, 'HSIRawData_10traidingDays_3Weeks_2Weekends.csv')
+
+            os.remove(pathDataFrameForDeletion0)
+            os.remove(pathDataFrameForDeletion1)
+            os.remove(pathDataFrameForDeletion2)
+            os.remove(pathDataFrameForDeletion3)
 
 if __name__ == '__main__':
     unittest.main()

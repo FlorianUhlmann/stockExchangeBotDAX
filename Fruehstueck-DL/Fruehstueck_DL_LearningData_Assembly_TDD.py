@@ -64,15 +64,24 @@ class LearningDataAssembly(unittest.TestCase):
                     [['2019-01-10'], ['2020-01-06'], ['2020-01-07'], ['2020-01-08'], ['2020-01-09'], ['2020-01-10'],
                      ['2020-01-13'], ['2020-01-14'], ['2020-01-15']], dtype=np.datetime64)
                 return tradingDays
-            #generate list for DataFrame
+            #generate list(column header) for DataFrame
             list_featuresDAX = GenerateList_featureDAX(self)
             list_featuresHSI = GenerateList_featureHSI(self)
             list_tradingDays = GenerateList_tradingDays(self)
+            #generate values for DataFrame
+            arr_valuesHSI = np.array([range(len(list_featuresHSI)),range(len(list_featuresHSI)),
+                                      range(len(list_featuresHSI)),range(len(list_featuresHSI)),
+                                      range(len(list_featuresHSI)),range(len(list_featuresHSI)),
+                                      range(len(list_featuresHSI)),range(len(list_featuresHSI)),
+                                      range(len(list_featuresHSI))]).astype(float)
+            arr_valuesDAX = np.array([range(len(list_featuresDAX)),range(len(list_featuresDAX)),
+                                      range(len(list_featuresDAX)),range(len(list_featuresDAX)),
+                                      range(len(list_featuresDAX)),range(len(list_featuresDAX)),
+                                      range(len(list_featuresDAX)),range(len(list_featuresDAX)),
+                                      range(len(list_featuresDAX))]).astype(float)
             #create DataFrame
-            df_HSI_UTCminus5 = pd.DataFrame(np.array([range(len(list_featuresHSI)),range(len(list_featuresHSI))]).astype(float),
-                                            columns=list_featuresHSI)
-            df_DAX_UTCminus5 = pd.DataFrame(np.array([range(len(list_featuresDAX))]).astype(float),
-                                            columns=list_featuresDAX)
+            df_HSI_UTCminus5 = pd.DataFrame(arr_valuesHSI,columns=list_featuresHSI)
+            df_DAX_UTCminus5 = pd.DataFrame(arr_valuesDAX,columns=list_featuresDAX)
             df_tradingDays = pd.DataFrame(list_tradingDays, columns=['tradingDay'])
             # merge DataFrames
             df_prefinal = pd.concat([df_tradingDays, df_HSI_UTCminus5, df_DAX_UTCminus5], axis=1)

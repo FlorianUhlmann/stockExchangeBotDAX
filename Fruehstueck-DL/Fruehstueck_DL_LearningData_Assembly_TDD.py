@@ -179,13 +179,115 @@ class LearningDataAssembly(unittest.TestCase):
 
             return pd.concat([df_date, df_time, df_close], axis=1, sort=False)
 
+        def Generate_DAXDataFrameRaw_10tradingDays_2Weekends(self):
+
+            def GenerateList_timeDAX():
+                list_traidingTimeDAX = []
+
+                list_traidingTimeDAX = []
+                list_traidingTimeDAX.append(time(13, 59).strftime("%H:%M"))
+                for h in range(2, 6):
+                    for m in range(0, 60):
+
+                        t = time(h, m)
+                        time_convert = t.strftime("%H:%M")
+
+                        list_traidingTimeDAX.append(str(time_convert))
+                        if (h == 5): break
+
+                return list_traidingTimeDAX * 10
+
+            def GenerateList_traidingDateDAX():
+
+                dayBeforeTraidingDate = np.array('2019-01-01', dtype=np.datetime64)
+                traidingDate = np.array('2019-01-02', dtype=np.datetime64)
+                array_traidingDay = np.repeat(traidingDate, 181)
+                array_date_KW1_02 = np.concatenate((dayBeforeTraidingDate + np.arange(1), array_traidingDay), axis=0)
+
+                dayBeforeTraidingDate = np.array('2019-01-02', dtype=np.datetime64)
+                traidingDate = np.array('2019-01-03', dtype=np.datetime64)
+                array_traidingDay = np.repeat(traidingDate, 181)
+                array_date_KW1_03 = np.concatenate((dayBeforeTraidingDate + np.arange(1), array_traidingDay), axis=0)
+
+                dayBeforeTraidingDate = np.array('2019-01-03', dtype=np.datetime64)
+                traidingDate = np.array('2019-01-06', dtype=np.datetime64)
+                array_traidingDay = np.repeat(traidingDate, 181)
+                array_date_KW2_06 = np.concatenate((dayBeforeTraidingDate + np.arange(1), array_traidingDay), axis=0)
+
+                dayBeforeTraidingDate = np.array('2019-01-06', dtype=np.datetime64)
+                traidingDate = np.array('2019-01-07', dtype=np.datetime64)
+                array_traidingDay = np.repeat(traidingDate, 181)
+                array_date_KW2_07 = np.concatenate((dayBeforeTraidingDate + np.arange(1), array_traidingDay), axis=0)
+
+                dayBeforeTraidingDate = np.array('2019-01-07', dtype=np.datetime64)
+                traidingDate = np.array('2019-01-08', dtype=np.datetime64)
+                array_traidingDay = np.repeat(traidingDate, 181)
+                array_date_KW2_08 = np.concatenate((dayBeforeTraidingDate + np.arange(1), array_traidingDay), axis=0)
+
+                dayBeforeTraidingDate = np.array('2019-01-08', dtype=np.datetime64)
+                traidingDate = np.array('2019-01-09', dtype=np.datetime64)
+                array_traidingDay = np.repeat(traidingDate, 181)
+                array_date_KW2_09 = np.concatenate((dayBeforeTraidingDate + np.arange(1), array_traidingDay), axis=0)
+
+                dayBeforeTraidingDate = np.array('2019-01-09', dtype=np.datetime64)
+                traidingDate = np.array('2019-01-10', dtype=np.datetime64)
+                array_traidingDay = np.repeat(traidingDate, 181)
+                array_date_KW2_10 = np.concatenate((dayBeforeTraidingDate + np.arange(1), array_traidingDay), axis=0)
+
+                dayBeforeTraidingDate = np.array('2019-01-10', dtype=np.datetime64)
+                traidingDate = np.array('2019-01-13', dtype=np.datetime64)
+                array_traidingDay = np.repeat(traidingDate, 181)
+                array_date_KW3_13 = np.concatenate((dayBeforeTraidingDate + np.arange(1), array_traidingDay), axis=0)
+
+                dayBeforeTraidingDate = np.array('2019-01-13', dtype=np.datetime64)
+                traidingDate = np.array('2019-01-14', dtype=np.datetime64)
+                array_traidingDay = np.repeat(traidingDate, 181)
+                array_date_KW3_14 = np.concatenate((dayBeforeTraidingDate + np.arange(1), array_traidingDay), axis=0)
+
+                dayBeforeTraidingDate = np.array('2019-01-14', dtype=np.datetime64)
+                traidingDate = np.array('2019-01-15', dtype=np.datetime64)
+                array_traidingDay = np.repeat(traidingDate, 181)
+                array_date_KW3_15 = np.concatenate((dayBeforeTraidingDate + np.arange(1), array_traidingDay), axis=0)
+
+                arr_10TradingDays_over3Weeks_with2Weekends = np.concatenate((array_date_KW1_02,
+                                                                             array_date_KW1_03,
+                                                                             array_date_KW2_06,
+                                                                             array_date_KW2_07,
+                                                                             array_date_KW2_08,
+                                                                             array_date_KW2_09,
+                                                                             array_date_KW2_10,
+                                                                             array_date_KW3_13,
+                                                                             array_date_KW3_14,
+                                                                             array_date_KW3_15), axis=0)
+
+                return arr_10TradingDays_over3Weeks_with2Weekends
+
+            array_traidingDate = GenerateList_traidingDateDAX()
+            list_traidingTimeDAX = GenerateList_timeDAX()
+
+            df_date = pd.DataFrame(array_traidingDate, columns=['date'])
+            df_time = pd.DataFrame(list_traidingTimeDAX, columns=['time'])
+            df_close = pd.DataFrame(np.tile(np.transpose(np.array([range(182)])), (10, 1)), columns=['close'])
+
+            return pd.concat([df_date, df_time, df_close], axis=1, sort=False)
+
         super(LearningDataAssembly, self).setUp()
         self.SOLLDataFrame_3Weeks = Generate_SollDataFrame_10tradingDays_2Weekends(self)
+
+
 
         dirnamePath = os.path.dirname(os.path.abspath(__file__))
         DataFrameSavePath = os.path.join(dirnamePath,
                 'Fruehstueck_DL_LearningData_Assembly_TDD_DataFrame_10traidingDays_3Weeks_2Weekends.csv')
         self.SOLLDataFrame_3Weeks.to_csv(DataFrameSavePath, index=True)
+
+        self.HSIRaw = Generate_HSIDataFrameRaw_10tradingDays_2Weekends(self)
+        self.DAXRaw = Generate_DAXDataFrameRaw_10tradingDays_2Weekends(self)
+
+        DataFrameSavePath = os.path.join(dirnamePath,'DaxRawData_10traidingDays_3Weeks_2Weekends.csv')
+        self.DAXRaw.to_csv(DataFrameSavePath, index=True)
+        DataFrameSavePath = os.path.join(dirnamePath,'HSIRawData_10traidingDays_3Weeks_2Weekends.csv')
+        self.HSIRaw.to_csv(DataFrameSavePath, index=True)
 
     def testForConcatinationOfHsiAndDaxData(self):
 

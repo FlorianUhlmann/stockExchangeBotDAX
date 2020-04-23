@@ -18,8 +18,6 @@ class LearningDataAssembly(unittest.TestCase):
 
         def Generate_SollDataFrame_10tradingDays_2Weekends(self):
 
-
-
             def GenerateList_featureHSI(self):
 
                 list_featuresHSI = []
@@ -64,31 +62,122 @@ class LearningDataAssembly(unittest.TestCase):
                     [['2019-01-10'], ['2020-01-06'], ['2020-01-07'], ['2020-01-08'], ['2020-01-09'], ['2020-01-10'],
                      ['2020-01-13'], ['2020-01-14'], ['2020-01-15']], dtype=np.datetime64)
                 return tradingDays
-            #generate list(column header) for DataFrame
-            list_featuresDAX = GenerateList_featureDAX(self)
-            list_featuresHSI = GenerateList_featureHSI(self)
-            list_tradingDays = GenerateList_tradingDays(self)
-            #generate values for DataFrame
-            arr_valuesHSI = np.array([range(len(list_featuresHSI)),range(len(list_featuresHSI)),
-                                      range(len(list_featuresHSI)),range(len(list_featuresHSI)),
-                                      range(len(list_featuresHSI)),range(len(list_featuresHSI)),
-                                      range(len(list_featuresHSI)),range(len(list_featuresHSI)),
-                                      range(len(list_featuresHSI))]).astype(float)
-            arr_valuesDAX = np.array([range(len(list_featuresDAX)),range(len(list_featuresDAX)),
-                                      range(len(list_featuresDAX)),range(len(list_featuresDAX)),
-                                      range(len(list_featuresDAX)),range(len(list_featuresDAX)),
-                                      range(len(list_featuresDAX)),range(len(list_featuresDAX)),
-                                      range(len(list_featuresDAX))]).astype(float)
-            #create DataFrame
-            df_HSI_UTCminus5 = pd.DataFrame(arr_valuesHSI,columns=list_featuresHSI)
-            df_DAX_UTCminus5 = pd.DataFrame(arr_valuesDAX,columns=list_featuresDAX)
-            df_tradingDays = pd.DataFrame(list_tradingDays, columns=['tradingDay'])
+
+            def generate_HSI_DAX_DataFrames():
+
+                # generate list(column header) for DataFrame
+                list_featuresDAX = GenerateList_featureDAX(self)
+                list_featuresHSI = GenerateList_featureHSI(self)
+                # generate values for DataFrame
+                arr_valuesHSI = np.array([range(len(list_featuresHSI)), range(len(list_featuresHSI)),
+                                          range(len(list_featuresHSI)), range(len(list_featuresHSI)),
+                                          range(len(list_featuresHSI)), range(len(list_featuresHSI)),
+                                          range(len(list_featuresHSI)), range(len(list_featuresHSI)),
+                                          range(len(list_featuresHSI))]).astype(float)
+                arr_valuesDAX = np.array([range(len(list_featuresDAX)), range(len(list_featuresDAX)),
+                                          range(len(list_featuresDAX)), range(len(list_featuresDAX)),
+                                          range(len(list_featuresDAX)), range(len(list_featuresDAX)),
+                                          range(len(list_featuresDAX)), range(len(list_featuresDAX)),
+                                          range(len(list_featuresDAX))]).astype(float)
+
+                DataFrame_HSI = pd.DataFrame(arr_valuesHSI, columns=list_featuresHSI)
+                DataFrame_DAX = pd.DataFrame(arr_valuesDAX,columns=list_featuresDAX)
+
+
+                return DataFrame_HSI,DataFrame_DAX
+
+            #create DataFrames
+            df_HSI_UTCminus5, df_DAX_UTCminus5 = generate_HSI_DAX_DataFrames()
+            df_tradingDays = pd.DataFrame(GenerateList_tradingDays(self), columns=['tradingDay'])
+
             # merge DataFrames
-            df_prefinal = pd.concat([df_tradingDays, df_HSI_UTCminus5, df_DAX_UTCminus5], axis=1)
+            df_merge = pd.concat([df_tradingDays, df_HSI_UTCminus5, df_DAX_UTCminus5], axis=1)
             #set traidingDay as index of DataFrame
-            df_HSI_DAX_UTCminus5 = df_prefinal.set_index('tradingDay')
+            df_HSI_DAX_UTCminus5 = df_merge.set_index('tradingDay')
 
             return df_HSI_DAX_UTCminus5
+
+        def Generate_HSIDataFrameRaw_10tradingDays_2Weekends(self):
+
+            def GenerateList_timeHSI():
+                list_traidingTimeHSI = []
+                for h in range(0, 4):
+                    for m in range(0, 60):
+
+                        t = time(h, m)
+                        time_convert = t.strftime("%H:%M")
+
+                        list_traidingTimeHSI.append(str(time_convert))
+                        if h == 3 and m >= 29:
+                            break
+                for h in range(4, 5):
+                    for m in range(15, 60):
+
+                        t = time(h, m)
+                        time_convert = t.strftime("%H:%M")
+
+                        list_traidingTimeHSI.append(str(time_convert))
+                        if h == 5:
+                            break
+
+                hsiClose = time(5, 0).strftime("%H:%M")
+                list_traidingTimeHSI.append(str(hsiClose))
+
+                list_traidingTimeHSI = list_traidingTimeHSI * 10
+
+                return list_traidingTimeHSI
+
+            def GenerateList_traidingDateHSI():
+
+                x = np.array([['2019-01-02']], dtype=np.datetime64)
+                array_traidingDay_W1_02 = np.repeat(x, 256, axis=0)
+
+                x = np.array([['2019-01-03']], dtype=np.datetime64)
+                array_traidingDay_W1_03 = np.repeat(x, 256, axis=0)
+
+                x = np.array([['2019-01-06']], dtype=np.datetime64)
+                array_traidingDay_W2_06 = np.repeat(x, 256, axis=0)
+
+                x = np.array([['2019-01-07']], dtype=np.datetime64)
+                array_traidingDay_W2_07 = np.repeat(x, 256, axis=0)
+
+                x = np.array([['2019-01-08']], dtype=np.datetime64)
+                array_traidingDay_W2_08 = np.repeat(x, 256, axis=0)
+
+                x = np.array([['2019-01-09']], dtype=np.datetime64)
+                array_traidingDay_W2_09 = np.repeat(x, 256, axis=0)
+
+                x = np.array([['2019-01-10']], dtype=np.datetime64)
+                array_traidingDay_W2_010 = np.repeat(x, 256, axis=0)
+
+                x = np.array([['2019-01-13']], dtype=np.datetime64)
+                array_traidingDay_W3_13 = np.repeat(x, 256, axis=0)
+
+                x = np.array([['2019-01-14']], dtype=np.datetime64)
+                array_traidingDay_W3_14 = np.repeat(x, 256, axis=0)
+
+                x = np.array([['2019-01-15']], dtype=np.datetime64)
+                array_traidingDay_W3_15 = np.repeat(x, 256, axis=0)
+
+                return np.concatenate((array_traidingDay_W1_02,
+                                       array_traidingDay_W1_03,
+                                       array_traidingDay_W2_06,
+                                       array_traidingDay_W2_07,
+                                       array_traidingDay_W2_08,
+                                       array_traidingDay_W2_09,
+                                       array_traidingDay_W2_010,
+                                       array_traidingDay_W3_13,
+                                       array_traidingDay_W3_14,
+                                       array_traidingDay_W3_15), axis=0)
+
+            array_traidingDate = GenerateList_traidingDateHSI()
+            list_traidingTimeHSI = GenerateList_timeHSI()
+
+            df_time = pd.DataFrame(list_traidingTimeHSI, columns=['time'])
+            df_close = pd.DataFrame(np.tile(np.transpose(np.array([range(256)])), (10, 1)), columns=['close'])
+            df_date = pd.DataFrame(array_traidingDate, columns=['date'])
+
+            return pd.concat([df_date, df_time, df_close], axis=1, sort=False)
 
         super(LearningDataAssembly, self).setUp()
         self.SOLLDataFrame_3Weeks = Generate_SollDataFrame_10tradingDays_2Weekends(self)

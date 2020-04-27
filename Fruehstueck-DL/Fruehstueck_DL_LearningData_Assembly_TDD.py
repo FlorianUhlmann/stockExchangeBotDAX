@@ -60,8 +60,8 @@ class LearningDataAssembly(unittest.TestCase):
 
             def GenerateList_tradingDays(self):
                 tradingDays = np.array(
-                    [['2019-01-10'], ['2020-01-06'], ['2020-01-07'], ['2020-01-08'], ['2020-01-09'], ['2020-01-10'],
-                     ['2020-01-13'], ['2020-01-14'], ['2020-01-15']], dtype=np.datetime64)
+                    [['2020-01-02'], ['2020-01-03'], ['2020-01-06'], ['2020-01-07'], ['2020-01-08'], ['2020-01-09'], ['2020-01-10'],
+                     ['2020-01-13'], ['2020-01-14'], ['2020-01-15']])
                 return tradingDays
 
             def generate_HSI_DAX_DataFrames():
@@ -74,12 +74,12 @@ class LearningDataAssembly(unittest.TestCase):
                                           range(len(list_featuresHSI)), range(len(list_featuresHSI)),
                                           range(len(list_featuresHSI)), range(len(list_featuresHSI)),
                                           range(len(list_featuresHSI)), range(len(list_featuresHSI)),
-                                          range(len(list_featuresHSI))]).astype(float)
+                                          range(len(list_featuresHSI)), range(len(list_featuresHSI))]).astype(float)
                 arr_valuesDAX = np.array([range(len(list_featuresDAX)), range(len(list_featuresDAX)),
                                           range(len(list_featuresDAX)), range(len(list_featuresDAX)),
                                           range(len(list_featuresDAX)), range(len(list_featuresDAX)),
                                           range(len(list_featuresDAX)), range(len(list_featuresDAX)),
-                                          range(len(list_featuresDAX))]).astype(float)
+                                          range(len(list_featuresDAX)), range(len(list_featuresDAX))]).astype(float)
 
                 DataFrame_HSI = pd.DataFrame(arr_valuesHSI, columns=list_featuresHSI)
                 DataFrame_DAX = pd.DataFrame(arr_valuesDAX,columns=list_featuresDAX)
@@ -89,13 +89,12 @@ class LearningDataAssembly(unittest.TestCase):
 
             #create DataFrames
             df_HSI_UTCminus5, df_DAX_UTCminus5 = generate_HSI_DAX_DataFrames()
-            df_tradingDays = pd.DataFrame(GenerateList_tradingDays(self), columns=['tradingDay'])
+            df_tradingDays = pd.DataFrame(GenerateList_tradingDays(self), columns=['tradingDate'])
 
             # merge DataFrames
             df_merge = pd.concat([df_tradingDays, df_HSI_UTCminus5, df_DAX_UTCminus5], axis=1)
             #set traidingDay as index of DataFrame
-            df_HSI_DAX_UTCminus5 = df_merge.set_index('tradingDay')
-
+            df_HSI_DAX_UTCminus5 = df_merge.set_index('tradingDate')
             return df_HSI_DAX_UTCminus5
 
         def Generate_HSIDataFrameRaw_10tradingDays_2Weekends(self):
@@ -130,34 +129,34 @@ class LearningDataAssembly(unittest.TestCase):
 
             def GenerateList_traidingDateHSI():
 
-                x = np.array([['2019-01-02']], dtype=np.datetime64)
+                x = np.array([['2020-01-02']], dtype=np.datetime64)
                 array_traidingDay_W1_02 = np.repeat(x, 256, axis=0)
 
-                x = np.array([['2019-01-03']], dtype=np.datetime64)
+                x = np.array([['2020-01-03']], dtype=np.datetime64)
                 array_traidingDay_W1_03 = np.repeat(x, 256, axis=0)
 
-                x = np.array([['2019-01-06']], dtype=np.datetime64)
+                x = np.array([['2020-01-06']], dtype=np.datetime64)
                 array_traidingDay_W2_06 = np.repeat(x, 256, axis=0)
 
-                x = np.array([['2019-01-07']], dtype=np.datetime64)
+                x = np.array([['2020-01-07']], dtype=np.datetime64)
                 array_traidingDay_W2_07 = np.repeat(x, 256, axis=0)
 
-                x = np.array([['2019-01-08']], dtype=np.datetime64)
+                x = np.array([['2020-01-08']], dtype=np.datetime64)
                 array_traidingDay_W2_08 = np.repeat(x, 256, axis=0)
 
-                x = np.array([['2019-01-09']], dtype=np.datetime64)
+                x = np.array([['2020-01-09']], dtype=np.datetime64)
                 array_traidingDay_W2_09 = np.repeat(x, 256, axis=0)
 
-                x = np.array([['2019-01-10']], dtype=np.datetime64)
+                x = np.array([['2020-01-10']], dtype=np.datetime64)
                 array_traidingDay_W2_010 = np.repeat(x, 256, axis=0)
 
-                x = np.array([['2019-01-13']], dtype=np.datetime64)
+                x = np.array([['2020-01-13']], dtype=np.datetime64)
                 array_traidingDay_W3_13 = np.repeat(x, 256, axis=0)
 
-                x = np.array([['2019-01-14']], dtype=np.datetime64)
+                x = np.array([['2020-01-14']], dtype=np.datetime64)
                 array_traidingDay_W3_14 = np.repeat(x, 256, axis=0)
 
-                x = np.array([['2019-01-15']], dtype=np.datetime64)
+                x = np.array([['2020-01-15']], dtype=np.datetime64)
                 array_traidingDay_W3_15 = np.repeat(x, 256, axis=0)
 
                 return np.concatenate((array_traidingDay_W1_02,
@@ -200,53 +199,53 @@ class LearningDataAssembly(unittest.TestCase):
 
             def GenerateList_traidingDateDAX():
 
-                dayBeforeTraidingDate = np.array('2019-01-01', dtype=np.datetime64)
-                traidingDate = np.array('2019-01-02', dtype=np.datetime64)
+                dayBeforeTraidingDate = np.array('2020-01-01', dtype=np.datetime64)
+                traidingDate = np.array('2020-01-02', dtype=np.datetime64)
                 array_traidingDay = np.repeat(traidingDate, 181)
                 array_date_KW1_02 = np.concatenate((dayBeforeTraidingDate + np.arange(1), array_traidingDay), axis=0)
 
-                dayBeforeTraidingDate = np.array('2019-01-02', dtype=np.datetime64)
-                traidingDate = np.array('2019-01-03', dtype=np.datetime64)
+                dayBeforeTraidingDate = np.array('2020-01-02', dtype=np.datetime64)
+                traidingDate = np.array('2020-01-03', dtype=np.datetime64)
                 array_traidingDay = np.repeat(traidingDate, 181)
                 array_date_KW1_03 = np.concatenate((dayBeforeTraidingDate + np.arange(1), array_traidingDay), axis=0)
 
-                dayBeforeTraidingDate = np.array('2019-01-03', dtype=np.datetime64)
-                traidingDate = np.array('2019-01-06', dtype=np.datetime64)
+                dayBeforeTraidingDate = np.array('2020-01-03', dtype=np.datetime64)
+                traidingDate = np.array('2020-01-06', dtype=np.datetime64)
                 array_traidingDay = np.repeat(traidingDate, 181)
                 array_date_KW2_06 = np.concatenate((dayBeforeTraidingDate + np.arange(1), array_traidingDay), axis=0)
 
-                dayBeforeTraidingDate = np.array('2019-01-06', dtype=np.datetime64)
-                traidingDate = np.array('2019-01-07', dtype=np.datetime64)
+                dayBeforeTraidingDate = np.array('2020-01-06', dtype=np.datetime64)
+                traidingDate = np.array('2020-01-07', dtype=np.datetime64)
                 array_traidingDay = np.repeat(traidingDate, 181)
                 array_date_KW2_07 = np.concatenate((dayBeforeTraidingDate + np.arange(1), array_traidingDay), axis=0)
 
-                dayBeforeTraidingDate = np.array('2019-01-07', dtype=np.datetime64)
-                traidingDate = np.array('2019-01-08', dtype=np.datetime64)
+                dayBeforeTraidingDate = np.array('2020-01-07', dtype=np.datetime64)
+                traidingDate = np.array('2020-01-08', dtype=np.datetime64)
                 array_traidingDay = np.repeat(traidingDate, 181)
                 array_date_KW2_08 = np.concatenate((dayBeforeTraidingDate + np.arange(1), array_traidingDay), axis=0)
 
-                dayBeforeTraidingDate = np.array('2019-01-08', dtype=np.datetime64)
-                traidingDate = np.array('2019-01-09', dtype=np.datetime64)
+                dayBeforeTraidingDate = np.array('2020-01-08', dtype=np.datetime64)
+                traidingDate = np.array('2020-01-09', dtype=np.datetime64)
                 array_traidingDay = np.repeat(traidingDate, 181)
                 array_date_KW2_09 = np.concatenate((dayBeforeTraidingDate + np.arange(1), array_traidingDay), axis=0)
 
-                dayBeforeTraidingDate = np.array('2019-01-09', dtype=np.datetime64)
-                traidingDate = np.array('2019-01-10', dtype=np.datetime64)
+                dayBeforeTraidingDate = np.array('2020-01-09', dtype=np.datetime64)
+                traidingDate = np.array('2020-01-10', dtype=np.datetime64)
                 array_traidingDay = np.repeat(traidingDate, 181)
                 array_date_KW2_10 = np.concatenate((dayBeforeTraidingDate + np.arange(1), array_traidingDay), axis=0)
 
-                dayBeforeTraidingDate = np.array('2019-01-10', dtype=np.datetime64)
-                traidingDate = np.array('2019-01-13', dtype=np.datetime64)
+                dayBeforeTraidingDate = np.array('2020-01-10', dtype=np.datetime64)
+                traidingDate = np.array('2020-01-13', dtype=np.datetime64)
                 array_traidingDay = np.repeat(traidingDate, 181)
                 array_date_KW3_13 = np.concatenate((dayBeforeTraidingDate + np.arange(1), array_traidingDay), axis=0)
 
-                dayBeforeTraidingDate = np.array('2019-01-13', dtype=np.datetime64)
-                traidingDate = np.array('2019-01-14', dtype=np.datetime64)
+                dayBeforeTraidingDate = np.array('2020-01-13', dtype=np.datetime64)
+                traidingDate = np.array('2020-01-14', dtype=np.datetime64)
                 array_traidingDay = np.repeat(traidingDate, 181)
                 array_date_KW3_14 = np.concatenate((dayBeforeTraidingDate + np.arange(1), array_traidingDay), axis=0)
 
-                dayBeforeTraidingDate = np.array('2019-01-14', dtype=np.datetime64)
-                traidingDate = np.array('2019-01-15', dtype=np.datetime64)
+                dayBeforeTraidingDate = np.array('2020-01-14', dtype=np.datetime64)
+                traidingDate = np.array('2020-01-15', dtype=np.datetime64)
                 array_traidingDay = np.repeat(traidingDate, 181)
                 array_date_KW3_15 = np.concatenate((dayBeforeTraidingDate + np.arange(1), array_traidingDay), axis=0)
 
@@ -268,7 +267,7 @@ class LearningDataAssembly(unittest.TestCase):
 
             df_date = pd.DataFrame(array_traidingDate, columns=['date'])
             df_time = pd.DataFrame(list_traidingTimeDAX, columns=['time'])
-            df_close = pd.DataFrame(np.tile(np.transpose(np.array([range(182)])), (10, 1)), columns=['close'])
+            df_close = pd.DataFrame(np.tile(np.transpose(np.array([range(182)])), (10, 1)), columns=['close'], dtype=float)
 
             return pd.concat([df_date, df_time, df_close], axis=1, sort=False)
 
@@ -288,7 +287,7 @@ class LearningDataAssembly(unittest.TestCase):
         self.HSIRaw = Generate_HSIDataFrameRaw_10tradingDays_2Weekends(self)
         DataFrameSavePath_DAXRaw = os.path.join(dirnamePath,'HSIRawData_10traidingDays_3Weeks_2Weekends.csv')
         self.HSIRaw.to_csv(DataFrameSavePath_DAXRaw, index=True)
-
+    '''
     def testForConcatinationOfHsiAndDaxData(self):
 
         def GenerateList_featureHSI(self):
@@ -336,7 +335,7 @@ class LearningDataAssembly(unittest.TestCase):
 
             list_featuresDAX = GenerateList_featureDAX(self)
             list_featuresHSI = GenerateList_featureHSI(self)
-            list_tradingDates = np.array([['2019-01-10']], dtype=np.datetime64)
+            list_tradingDates = np.array([['2020-01-10']], dtype=np.datetime64)
             index_tradingDay = ['tradingDay']
             df_HSI_UTCminus5 = pd.DataFrame(np.array([range(len(list_featuresHSI))]).astype(float), columns=list_featuresHSI)
             df_DAX_UTCminus5 = pd.DataFrame(np.array([range(len(list_featuresDAX))]).astype(float), columns=list_featuresDAX)
@@ -376,7 +375,7 @@ class LearningDataAssembly(unittest.TestCase):
                 return list_traidingTimeHSI
             def GenerateList_traidingDateHSI():
 
-                x = np.array([['2019-01-10']], dtype=np.datetime64)
+                x = np.array([['2020-01-10']], dtype=np.datetime64)
                 array_date = np.repeat(x, 256, axis=0)
 
                 return array_date
@@ -411,8 +410,8 @@ class LearningDataAssembly(unittest.TestCase):
 
             def GenerateList_traidingDateDAX():
 
-                dayBeforeTraidingDate = np.array('2019-01-09', dtype=np.datetime64)
-                traidingDate = np.array('2019-01-10', dtype=np.datetime64)
+                dayBeforeTraidingDate = np.array('2020-01-09', dtype=np.datetime64)
+                traidingDate = np.array('2020-01-10', dtype=np.datetime64)
                 array_traidingDay = np.repeat(traidingDate, 181)
                 array_date = np.concatenate((dayBeforeTraidingDate + np.arange(1), array_traidingDay), axis=0)
                 array_date = array_date.reshape(182, 1)
@@ -459,18 +458,27 @@ class LearningDataAssembly(unittest.TestCase):
 
         assert_frame_equal(ISTDataFrame, SollDataFrame, check_column_type=False, check_frame_type=False,
                           check_index_type=False)
-
-
-
-
-
+    
+    '''
     def testTakeRawDataFromDAXandHSIandAssembleLearningData_10tradingDays_2Weekends(self):
 
         SOLLDataFrame = self.SOLLDataFrame_3Weeks
 
         ISTDataFrame = pd.DataFrame()
 
-        assert_frame_equal(SOLLDataFrame, ISTDataFrame, check_names=True )
+        dirname = os.path.dirname(os.path.abspath(__file__))
+        pathFileDAXDataRaw = os.path.join(dirname, 'DaxRawData_10traidingDays_3Weeks_2Weekends.csv')
+        pathFileHSIDataRaw = os.path.join(dirname, 'HSIRawData_10traidingDays_3Weeks_2Weekends.csv')
+
+        CreateISTDataFrame = LDA(pathFileHSIDataRaw, pathFileDAXDataRaw)
+        CreateISTDataFrame.showDataFrameRaw()
+        ISTDataFrame = CreateISTDataFrame.createTrainingdataDataFrame(CreateISTDataFrame.hsi_DataFrame_rawData,CreateISTDataFrame.dax_DataFrame_rawData)
+        print('ISTDataFrame view')
+        print(ISTDataFrame.info())
+        print('SOLLDataFrame view')
+        print(SOLLDataFrame.info())
+        assert_frame_equal(SOLLDataFrame, ISTDataFrame, check_dtype=False, check_index_type=False, check_column_type=False, check_frame_type=True, check_less_precise=False, check_names=False, by_blocks=False, check_exact=False, check_datetimelike_compat=False, check_categorical=True, check_like=False )
+
 
     def tearDown(self):
         timE.sleep(3)
@@ -478,17 +486,18 @@ class LearningDataAssembly(unittest.TestCase):
 
         dirnamePath = os.path.dirname(os.path.abspath(__file__))
 
-        #pathDataFrameForDeletion0 = os.path.join(dirnamePath,'Fruehstueck_DL_DataPreparation_createOutputLabels_TDD_TestDataFrame_inputData.csv')
+        pathDataFrameForDeletion0 = os.path.join(dirnamePath,'Fruehstueck_DL_DataPreparation_createOutputLabels_TDD_TestDataFrame_inputData.csv')
         pathDataFrameForDeletion1 = os.path.join(dirnamePath, 'Fruehstueck_DL_LearningData_Assembly_TDD_DataFrame_10traidingDays_3Weeks_2Weekends.csv')
         pathDataFrameForDeletion2 = os.path.join(dirnamePath, 'DaxRawData_10traidingDays_3Weeks_2Weekends.csv')
         pathDataFrameForDeletion3 = os.path.join(dirnamePath, 'HSIRawData_10traidingDays_3Weeks_2Weekends.csv')
 
-
-        #os.remove(pathDataFrameForDeletion0)
-        os.remove(pathDataFrameForDeletion1)
-        os.remove(pathDataFrameForDeletion2)
-        os.remove(pathDataFrameForDeletion3)
-
+        try:
+            #os.remove(pathDataFrameForDeletion0)
+            os.remove(pathDataFrameForDeletion1)
+            os.remove(pathDataFrameForDeletion2)
+            os.remove(pathDataFrameForDeletion3)
+        except():
+            print('error occured while deleting file')
 if __name__ == '__main__':
     unittest.main()
 

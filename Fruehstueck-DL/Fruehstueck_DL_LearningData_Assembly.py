@@ -31,19 +31,33 @@ class LearningDataAssembly:
 
         def createDataFrameWithOnlyDaxCloseTimes(dax_DataFrame):
             # get all columns with DaxClose value
-            t = time(13, 59)
-            time_convert = t.strftime("%H:%M")
-            DAX_Close_only = dax_DataFrame.loc[dax_DataFrame['time'] == str(time_convert)]
+            closeTimeDAX = time(13, 59)
+            closeTimeDAX = closeTimeDAX.strftime("%H:%M")
+            DAX_Close_only = dax_DataFrame.loc[dax_DataFrame['time'] == str(closeTimeDAX)]
             return DAX_Close_only
 
         def createArrayTrainingData(DAX_Close_only, hsi_DataFrame, dax_DataFrame):
             #TODO CleanCode !!!
-            array_trainData = []
+            def calculateTradingDaysFromDAX_Close_only():
+                 df =  DAX_Close_only.apply(lambda x: x['date'] + pd.tseries.offsets.BusinessDay(n=1), axis=1)
 
-            for DAXClose in range(0, len(DAX_Close_only['date'])):
+                 #drop last Row - is apex of calculation but NO trading day
+                 #df = df[:-1]
+                 return df
+
+            array_trainData = []
+            df_tradingDays = calculateTradingDaysFromDAX_Close_only()
+            print('df_tradingDays')
+            print(df_tradingDays.head(200))
+            print(DAX_Close_only)
+            print('df_tradingDays EEEEENDNNNNNNN')
+
+            for DAXClose in range(0, len(df_tradingDays)):
                 #TODO check for nextday is existing traiding day
 
                 nextDay = 1
+
+
                 if(DAXClose < len(DAX_Close_only['date'])-1):
                     if (DAX_Close_only['date'].iloc[DAXClose] + timedelta(days=1) == DAX_Close_only['date'].iloc[
                         DAXClose + 1]):
@@ -52,9 +66,14 @@ class LearningDataAssembly:
                     else:
                         print('its Friday')
                         nextDay = int(3)
-
+                list_DAX_Close_only = DAX_Close_only['date']
+                print('value')
+                print(df_tradingDays.iloc[DAXClose])
+                print()
+                print(DAX_Close_only['date'].iloc[DAXClose] + timedelta(days=nextDay))
+                print('valuie end')
                 # print(DAX_Close_only['date'].iloc[0]+ timedelta(days=1))
-                DAX_DAY = dax_DataFrame.loc[dax_DataFrame['date'] == (DAX_Close_only['date'].iloc[DAXClose] + timedelta(days=nextDay))]
+                DAX_DAY = dax_DataFrame.loc[dax_DataFrame['date'] == df_tradingDays.iloc[DAXClose] ]
                 # remove 13:59h
                 DAX_DAY = DAX_DAY.loc[DAX_DAY['time'] != str(time(13, 59).strftime("%H:%M"))]
                 # get all HSI values one day later
@@ -80,8 +99,6 @@ class LearningDataAssembly:
                 else:
                     array_trainData = np.vstack((array_trainData, array_trainData_first_day))
                     print('else blocl')
-
-                    print(array_trainData)
 
                 # array_trainData_as_float = array_trainData.astype(float)
             return array_trainData
@@ -130,14 +147,10 @@ class LearningDataAssembly:
 
         (hsi_DataFrame, dax_DataFrame) = setDateColumnToDtypeDate()
         DAX_Close_only = createDataFrameWithOnlyDaxCloseTimes(dax_DataFrame)
-
+        print('DAX_CLOSE_ONLY')
+        print(DAX_Close_only)
         arrayTrainingData = createArrayTrainingData(DAX_Close_only, hsi_DataFrame, dax_DataFrame)
         features = featureListGeneration(hsi_DataFrame, dax_DataFrame)
-        print('SDFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF')
-        print(features)
-        print('SDFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF')
-        print(arrayTrainingData)
-        print('SDFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF')
 
         trainingDataFrame = pd.DataFrame(arrayTrainingData, columns=features)
         trainingDataFrame = trainingDataFrame.set_index('tradingDate')
@@ -162,10 +175,6 @@ def main():
     GenerateTrainData = LearningDataAssembly(pathInputDataHSI, pathInputDataDAX)
     train_data = GenerateTrainData.createTrainingdataDataFrame(GenerateTrainData.hsi_DataFrame_rawData,
                                                               GenerateTrainData.dax_DataFrame_rawData)
-
-
-    print('train_data')
-    print(train_data.dtypes)
     GenerateTrainData.saveDataFrame(train_data, pathSaveOuput)
 
 

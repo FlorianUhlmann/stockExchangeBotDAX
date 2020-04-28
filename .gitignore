@@ -3,3 +3,6 @@
 .idea/
 **/Fruehstueck-DL/FruehstuecksBot-DL/.cache
 FruehstuecksBot-DL/
+*/.cache/
+**/Fruehstueck-DL/.cache
+*.ipynb

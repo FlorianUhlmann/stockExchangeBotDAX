@@ -6,7 +6,7 @@ from datetime import datetime, time, timedelta
 class OutputDataGenerator():
     def __init__(self, DataFrameLocation):
         self.DataFrameLocation = DataFrameLocation
-        self.DataFrame_input = pd.read_csv(self.DataFrameLocation, sep=',', dtype=float)
+        self.DataFrame_input = pd.read_csv(self.DataFrameLocation, sep=',')
 
     def showDataFrameRaw(self):
         print(self.DataFrame_input)

@@ -55,7 +55,7 @@ class CreateOutputLabelTest(unittest.TestCase):
 
                 return list_featuresDAX
 
-            self.list_features = GenerateList_featureHSI()+GenerateList_featureDAX()
+            self.list_features = ['tradingDate']+GenerateList_featureHSI()+GenerateList_featureDAX()
 
             return self.list_features
 
@@ -72,11 +72,12 @@ class CreateOutputLabelTest(unittest.TestCase):
         self.DAX_sellDayValues= self.DAX_buyDayValues[::-1]
         self.DAX_noTradeDayValuesOne= np.concatenate((np.array([0.0,1000.0]),np.arange(180.0)))
         self.DAX_noTradeDayValuesTwo=np.concatenate((np.array([1000.0,0.0]),np.arange(180.0)))
+        self.tradingDate = ['02-01-2020']
 
-        self.traidingDayOne = np.hstack((self.HSI_values,self.DAX_buyDayValues))
-        self.traidingDayTwo = np.hstack((self.HSI_values,self.DAX_sellDayValues))
-        self.traidingDayThree = np.hstack((self.HSI_values,self.DAX_noTradeDayValuesOne))
-        self.traidingDayFour = np.hstack((self.HSI_values,self.DAX_noTradeDayValuesTwo))
+        self.traidingDayOne = np.hstack((self.tradingDate, self.HSI_values, self.DAX_buyDayValues))
+        self.traidingDayTwo = np.hstack((self.tradingDate, self.HSI_values,self.DAX_sellDayValues))
+        self.traidingDayThree = np.hstack((self.tradingDate, self.HSI_values,self.DAX_noTradeDayValuesOne))
+        self.traidingDayFour = np.hstack((self.tradingDate, self.HSI_values,self.DAX_noTradeDayValuesTwo))
 
         self.traidingDays = np.vstack((self.traidingDayOne,self.traidingDayTwo,self.traidingDayThree,self.traidingDayFour))
 

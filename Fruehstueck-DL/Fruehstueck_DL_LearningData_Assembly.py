@@ -37,70 +37,71 @@ class LearningDataAssembly:
             return DAX_Close_only
 
         def createArrayTrainingData(DAX_Close_only, hsi_DataFrame, dax_DataFrame):
-            #TODO CleanCode !!!
-            def calculateTradingDaysFromDAX_Close_only():
-                 df =  DAX_Close_only.apply(lambda x: x['date'] + pd.tseries.offsets.BusinessDay(n=1), axis=1)
 
-                 #drop last Row - is apex of calculation but NO trading day
-                 #df = df[:-1]
+            def calculateTradingDaysFromDAX_Close_only():
+                #DAX_CLose_only has the close price of the previous trading day. Important is the date of the trading day
+                #it is needed to calculate the acutal trading day
+                 df =  DAX_Close_only.apply(lambda x: x['date'] + pd.tseries.offsets.BusinessDay(n=1), axis=1)
                  return df
+            def createArrTrainData(df_tradingDays):
+                for DAXCloseDate in range(0, len(df_tradingDays)):
+
+                    def getDAXTradingDayValues():
+                        # print(DAX_Close_only['date'].iloc[0]+ timedelta(days=1))
+                        DAX_DAY = dax_DataFrame.loc[dax_DataFrame['date'] == df_tradingDays.iloc[DAXCloseDate]]
+                        # remove 13:59h
+                        return DAX_DAY.loc[DAX_DAY['time'] != str(time(13, 59).strftime("%H:%M"))]
+
+                    def getHSITradingDayValues():
+                        # get all HSI values one day later
+                        HSI_DAY = hsi_DataFrame.loc[hsi_DataFrame['date'] == df_tradingDays.iloc[DAXCloseDate]]
+                        return HSI_DAY
+
+                    def join_HSI_DAX_TradingDayValues():
+                        HSI_DAX_concat = pd.concat([HSI_DAY, DAX_Close_only.iloc[0:1], DAX_DAY], ignore_index=True)
+                        return HSI_DAX_concat
+
+                    def getIndexValue():
+                        # get the trading day in stringFormat from the HSI_data
+                        TRAIDING_DAY = HSI_DAY['date'].iloc[0].strftime("%Y-%m-%d")
+                        return TRAIDING_DAY
+
+                    def joinIndexValueAnd_HSI_DAX__TradingDayValues():
+                        def changeShapeArrayHSIDAXData():
+                            # get close values of HSI_DAX_concat into a list
+                            array_trainData_first_day = HSI_DAX_concat['close'].to_numpy()
+                            array_trainData_first_day.astype(float)
+                            # reshape numpy array (number,) -> (1,number)
+                            array_trainData_first_day = np.reshape(array_trainData_first_day,
+                                                                   (1, len(HSI_DAX_concat['close'])))
+                            # concat tradingDate to array_trainngData_first_day
+                            return array_trainData_first_day
+
+                        HSI_DAX_data = changeShapeArrayHSIDAXData()
+                        array_trainData_first_day = np.concatenate((TRAIDING_DAY, HSI_DAX_data), axis=None)
+                        return array_trainData_first_day
+
+                    DAX_DAY = getDAXTradingDayValues()
+                    HSI_DAY = getHSITradingDayValues()
+                    HSI_DAX_concat = join_HSI_DAX_TradingDayValues()
+                    TRAIDING_DAY = getIndexValue()
+                    array_trainData_buffer = joinIndexValueAnd_HSI_DAX__TradingDayValues()
+
+                    if DAXCloseDate == 0:
+                        array_trainData = array_trainData_buffer
+                        print('if blocl')
+
+                        print(array_trainData)
+                    else:
+                        array_trainData = np.vstack((array_trainData, array_trainData_buffer))
+                        print('else blocl')
+
+                return array_trainData
 
             array_trainData = []
+
             df_tradingDays = calculateTradingDaysFromDAX_Close_only()
-            print('df_tradingDays')
-            print(df_tradingDays.head(200))
-            print(DAX_Close_only)
-            print('df_tradingDays EEEEENDNNNNNNN')
-
-            for DAXClose in range(0, len(df_tradingDays)):
-                #TODO check for nextday is existing traiding day
-
-                nextDay = 1
-
-
-                if(DAXClose < len(DAX_Close_only['date'])-1):
-                    if (DAX_Close_only['date'].iloc[DAXClose] + timedelta(days=1) == DAX_Close_only['date'].iloc[
-                        DAXClose + 1]):
-                        print('not Friday')
-                        nextDay = int(1)
-                    else:
-                        print('its Friday')
-                        nextDay = int(3)
-                list_DAX_Close_only = DAX_Close_only['date']
-                print('value')
-                print(df_tradingDays.iloc[DAXClose])
-                print()
-                print(DAX_Close_only['date'].iloc[DAXClose] + timedelta(days=nextDay))
-                print('valuie end')
-                # print(DAX_Close_only['date'].iloc[0]+ timedelta(days=1))
-                DAX_DAY = dax_DataFrame.loc[dax_DataFrame['date'] == df_tradingDays.iloc[DAXClose] ]
-                # remove 13:59h
-                DAX_DAY = DAX_DAY.loc[DAX_DAY['time'] != str(time(13, 59).strftime("%H:%M"))]
-                # get all HSI values one day later
-                HSI_DAY = hsi_DataFrame.loc[
-                    hsi_DataFrame['date'] == (DAX_Close_only['date'].iloc[DAXClose] + timedelta(days=nextDay))]
-                # get the trading day in stringFormat from the HSI
-                TRAIDING_DAY = HSI_DAY['date'].iloc[0].strftime("%Y-%m-%d")
-                HSI_DAX_concat = pd.concat([HSI_DAY, DAX_Close_only.iloc[0:1], DAX_DAY], ignore_index=True)
-                # get close values of HSI_DAX_concat into a list
-                array_trainData_first_day = HSI_DAX_concat['close'].to_numpy()
-                array_trainData_first_day.astype(float)
-                # reshape numpy array (number,) -> (1,number)
-                array_trainData_first_day = np.reshape(array_trainData_first_day, (1, len(HSI_DAX_concat['close'])))
-                # concat tradingDate to array_trainngData_first_day
-                array_trainData_first_day = np.concatenate((TRAIDING_DAY,array_trainData_first_day), axis=None)
-                array_trainData_first_day = np.hstack((array_trainData_first_day))
-                print(array_trainData_first_day)
-                if DAXClose == 0:
-                    array_trainData = array_trainData_first_day
-                    print('if blocl')
-
-                    print(array_trainData)
-                else:
-                    array_trainData = np.vstack((array_trainData, array_trainData_first_day))
-                    print('else blocl')
-
-                # array_trainData_as_float = array_trainData.astype(float)
+            array_trainData =  createArrTrainData(df_tradingDays)
             return array_trainData
 
         def featureListGeneration(hsi_DataFrame, dax_DataFrame):

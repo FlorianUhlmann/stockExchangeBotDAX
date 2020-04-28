@@ -462,21 +462,20 @@ class LearningDataAssembly(unittest.TestCase):
     '''
     def testTakeRawDataFromDAXandHSIandAssembleLearningData_10tradingDays_2Weekends(self):
 
+        def getFilesPath():
+            dirname = os.path.dirname(os.path.abspath(__file__))
+            pathFileDAXDataRaw = os.path.join(dirname, 'DaxRawData_10traidingDays_3Weeks_2Weekends.csv')
+            pathFileHSIDataRaw = os.path.join(dirname, 'HSIRawData_10traidingDays_3Weeks_2Weekends.csv')
+
+            return (pathFileDAXDataRaw,pathFileHSIDataRaw)
+
         SOLLDataFrame = self.SOLLDataFrame_3Weeks
-
         ISTDataFrame = pd.DataFrame()
-
-        dirname = os.path.dirname(os.path.abspath(__file__))
-        pathFileDAXDataRaw = os.path.join(dirname, 'DaxRawData_10traidingDays_3Weeks_2Weekends.csv')
-        pathFileHSIDataRaw = os.path.join(dirname, 'HSIRawData_10traidingDays_3Weeks_2Weekends.csv')
-
+        (pathFileDAXDataRaw, pathFileHSIDataRaw) = getFilesPath()
         CreateISTDataFrame = LDA(pathFileHSIDataRaw, pathFileDAXDataRaw)
         CreateISTDataFrame.showDataFrameRaw()
         ISTDataFrame = CreateISTDataFrame.createTrainingdataDataFrame(CreateISTDataFrame.hsi_DataFrame_rawData,CreateISTDataFrame.dax_DataFrame_rawData)
-        print('ISTDataFrame view')
-        print(ISTDataFrame.info())
-        print('SOLLDataFrame view')
-        print(SOLLDataFrame.info())
+
         assert_frame_equal(SOLLDataFrame, ISTDataFrame, check_dtype=False, check_index_type=False, check_column_type=False, check_frame_type=True, check_less_precise=False, check_names=False, by_blocks=False, check_exact=False, check_datetimelike_compat=False, check_categorical=True, check_like=False )
 
 

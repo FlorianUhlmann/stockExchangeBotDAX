@@ -4,7 +4,7 @@ import pandas as pd
 from pandas.util.testing import assert_frame_equal
 import numpy as np
 from datetime import datetime, time
-from Fruehstueck_DL_DataPreparation_createOutputLabels import OutputDataGenerator as ODG
+from Fruehstueck_DL_DataPreparation_03_createOutputLabels import OutputDataGenerator as ODG
 
 class CreateOutputLabelTest(unittest.TestCase):
 
@@ -113,7 +113,7 @@ class CreateOutputLabelTest(unittest.TestCase):
 
         dirnamePath = os.path.dirname(os.path.abspath(__file__))
         DataFramePathForDeletion = os.path.join(dirnamePath,'Fruehstueck_DL_DataPreparation_createOutputLabels_TDD_TestDataFrame_inputData.csv')
-        os.remove(DataFramePathForDeletion)
+        #os.remove(DataFramePathForDeletion)
 
 if __name__ == '__main__':
     unittest.main()

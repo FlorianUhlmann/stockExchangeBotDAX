@@ -4,7 +4,7 @@ from datetime import time
 import pandas as pd
 import numpy as np
 from pandas.util.testing import assert_frame_equal
-from Fruehstueck_DL_LearningData_Assembly import LearningDataAssembly as LDA
+from Fruehstueck_DL_DataPreparation_02_LearningData_Assembly import LearningDataAssembly as LDA
 import time as timE
 
 

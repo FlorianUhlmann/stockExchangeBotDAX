@@ -162,7 +162,7 @@ class LearningDataAssembly:
 
     def saveDataFrame(self, stockData, placeToSave):
 
-        stockData.to_csv(str(placeToSave), sep=',',index=False)
+        stockData.to_csv(str(placeToSave), sep=',',index=True)
 
 
 def main():

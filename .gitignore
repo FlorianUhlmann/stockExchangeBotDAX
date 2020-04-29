@@ -6,3 +6,4 @@ FruehstuecksBot-DL/
 */.cache/
 **/Fruehstueck-DL/.cache/v/cache
 *.ipynb
+*.csv

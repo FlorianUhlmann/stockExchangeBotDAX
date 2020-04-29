@@ -55,7 +55,7 @@ class CreateOutputLabelTest(unittest.TestCase):
 
                 return list_featuresDAX
 
-            self.list_features = ['tradingDate']+GenerateList_featureHSI()+GenerateList_featureDAX()
+            self.list_features = GenerateList_featureHSI()+GenerateList_featureDAX()
 
             return self.list_features
 
@@ -72,18 +72,25 @@ class CreateOutputLabelTest(unittest.TestCase):
         self.DAX_sellDayValues= self.DAX_buyDayValues[::-1]
         self.DAX_noTradeDayValuesOne= np.concatenate((np.array([0.0,1000.0]),np.arange(180.0)))
         self.DAX_noTradeDayValuesTwo=np.concatenate((np.array([1000.0,0.0]),np.arange(180.0)))
-        self.tradingDate = ['02-01-2020']
+        tradingDate = [['02-01-2020'], ['03-01-2020'], ['06-01-2020'], ['07-01-2020']]
 
-        self.traidingDayOne = np.hstack((self.tradingDate, self.HSI_values, self.DAX_buyDayValues))
-        self.traidingDayTwo = np.hstack((self.tradingDate, self.HSI_values,self.DAX_sellDayValues))
-        self.traidingDayThree = np.hstack((self.tradingDate, self.HSI_values,self.DAX_noTradeDayValuesOne))
-        self.traidingDayFour = np.hstack((self.tradingDate, self.HSI_values,self.DAX_noTradeDayValuesTwo))
+        self.traidingDayOne = np.hstack((self.HSI_values, self.DAX_buyDayValues))
+        self.traidingDayTwo = np.hstack((self.HSI_values,self.DAX_sellDayValues))
+        self.traidingDayThree = np.hstack((self.HSI_values,self.DAX_noTradeDayValuesOne))
+        self.traidingDayFour = np.hstack((self.HSI_values,self.DAX_noTradeDayValuesTwo))
 
         self.traidingDays = np.vstack((self.traidingDayOne,self.traidingDayTwo,self.traidingDayThree,self.traidingDayFour))
 
         self.features = createFeatures()
-        self.inputData = pd.DataFrame(self.traidingDays,columns=self.features)
-        self.outputData = pd.DataFrame([[1,0,0],[0,1,0],[0,0,1],[0,0,1]], columns= ['DAX_BUY_DAY','DAX_SELL_DAY','NO_TRADE_DAY'])
+        self.inputDataBuffer = pd.DataFrame(self.traidingDays,columns=self.features).apply(pd.to_numeric, errors='coerce')
+        tradingDates = pd.DataFrame(tradingDate, columns=['tradingDate'])
+        self.inputData = pd.concat([tradingDates, self.inputDataBuffer], axis=1)
+
+        self.outputData = pd.DataFrame([[1,0,0],[0,1,0],[0,0,1],[0,0,1]], columns= ['DAX_BUY_DAY','DAX_SELL_DAY','NO_TRADE_DAY']).astype(object)
+
+        self.concatedDataFrame = pd.concat([self.inputData,self.outputData],axis=1)
+        self.newDtypesInDataFrame = self.concatedDataFrame['tradingDate'].astype(object)
+        self.newDtypesInDataFrame = self.concatedDataFrame.DAX_BUY_DAY.astype(int)
 
         self.SOLLDataFrame = pd.concat([self.inputData,self.outputData],axis=1)
 
@@ -100,11 +107,16 @@ class CreateOutputLabelTest(unittest.TestCase):
         output = ODG(DataFramefilename)
 
         ISTDataFrame = output.createOutputDataFrame(output.DataFrame_input)
+        print(output.DataFrame_input)
+        print('ISTDataFrame.dtypes')
+        print()
+        print(ISTDataFrame.dtypes)
+        print('SOLLDataFrame.dtypes')
+        print()
+        print(self.SOLLDataFrame.dtypes)
 
-        print(ISTDataFrame)
-        print(self.SOLLDataFrame)
-
-        assert_frame_equal(ISTDataFrame, self.SOLLDataFrame, check_column_type=False, check_frame_type=False,check_index_type=True,check_dtype=False)
+        assert_frame_equal(ISTDataFrame, self.SOLLDataFrame, check_column_type=False, check_frame_type=False,check_index_type=False,check_dtype=False)
+        #np.array_equal(ISTDataFrame, self.SOLLDataFrame)
 
 
 

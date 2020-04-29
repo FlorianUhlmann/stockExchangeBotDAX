@@ -1,8 +1,8 @@
 **/Boersendaten
-.cache/
+**.cache/
 .idea/
 **/Fruehstueck-DL/FruehstuecksBot-DL/.cache
 FruehstuecksBot-DL/
 */.cache/
-**/Fruehstueck-DL/.cache
+**/Fruehstueck-DL/.cache/v/cache
 *.ipynb

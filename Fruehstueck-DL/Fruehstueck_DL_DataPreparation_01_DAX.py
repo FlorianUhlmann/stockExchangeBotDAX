@@ -74,8 +74,8 @@ class DataPreparationDAX:
 
 def main():
 
-    pathRawDataFrameDAX = 'D:/Profiles/fuhlmann/Programmierung/Python/boerse_DataScience_project/Boersendaten/DAX_data/DAX_M1_2019/DAX_M1_2019.csv'
-    savingpathFormatedDataFrameDAX = 'D:/Profiles/fuhlmann/Programmierung/python/boerse_DataScience_project/Boersendaten/DAX_data/DAX_M1_2019/DAX_M1_2019_only_Close_values_UTC-5_test.csv'
+    pathRawDataFrameDAX = 'D:/Profiles/fuhlmann/Programmierung/Python/boerse_DataScience_project/Boersendaten/DAX_data/DAX_M1_2018/DAX_M1_2018.csv'
+    savingpathFormatedDataFrameDAX = 'D:/Profiles/fuhlmann/Programmierung/python/boerse_DataScience_project/Boersendaten/DAX_data/DAX_M1_2018/DAX_M1_2019_only_Close_values_UTC-5.csv'
     # performance gedanke, Erst columns dann rows deleten oder umgekehert -> timewatch messung
     # JAN performance gedanken, überlegen aus der tehorie heraus warum so einen best. code aufrauf und nciht anders.
     DFtoPrepare = DataPreparationDAX(pathRawDataFrameDAX)

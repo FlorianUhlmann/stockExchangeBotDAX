@@ -55,8 +55,8 @@ class DataPreparationHSI:
 
 def main():
 
-    pathRawDataFrameDAX = 'D:/Profiles/fuhlmann/Programmierung/Python/boerse_DataScience_project/Boersendaten/HAN_SENG_data/HSI_M1_2019/HSI_M1_2019.csv'
-    savingpathFormatedDataFrameHSI = 'D:/Profiles/fuhlmann/Programmierung/Python/boerse_DataScience_project/Boersendaten/HAN_SENG_data/HSI_M1_2019/HSI_M1_2019_CLOSE_values.csv'
+    pathRawDataFrameDAX = 'D:/Profiles/fuhlmann/Programmierung/Python/boerse_DataScience_project/Boersendaten/HAN_SENG_data/HSI_M1_2018/HSI_M1_2018.csv'
+    savingpathFormatedDataFrameHSI = 'D:/Profiles/fuhlmann/Programmierung/Python/boerse_DataScience_project/Boersendaten/HAN_SENG_data/HSI_M1_2018/HSI_M1_2018_CLOSE_UTC-5.csv'
 
     DFtoPrepare = DataPreparationHSI(pathRawDataFrameDAX)
     DFtoPrepare.showDataFrame()
@@ -67,3 +67,14 @@ def main():
 
 
 main()
+
+
+start = df_HSI.date.searchsorted(datetime.datetime(2018, 2, 1))
+end = df_HSI.date.searchsorted(datetime.datetime(2018, 3, 1))
+df_HSI_february = df_HSI.iloc[start:end]
+df_HSI_february.to_csv('D:/Profiles/fuhlmann/Programmierung/python/boerse_DataScience_project/Boersendaten/HSI_data/HSI_M1_2018/HSI_M1_2018_02_february_cleanedData.csv', sep=',', index=False)
+
+start = df_DAX.date.searchsorted(datetime.datetime(2018, 2, 1))
+end = df_DAX.date.searchsorted(datetime.datetime(2018, 3, 1))
+df_DAX_february = df_DAX.iloc[start:end]
+df_DAX_february.to_csv('D:/Profiles/fuhlmann/Programmierung/python/boerse_DataScience_project/Boersendaten/DAX_data/DAX_M1_2018/DAX_M1_2018_02_february_cleanedData.csv', sep=',', index=False)

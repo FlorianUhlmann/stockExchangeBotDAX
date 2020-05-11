@@ -32,7 +32,7 @@ class OutputDataGenerator():
             DAX_SELL_DAY = 0
             NO_TRADE_DAY =0
             stockExchangeDay = 0
-            threshold = 1000.0
+            threshold = 0.0
 
             for row,index in DF_DAX.iterrows():
 

@@ -68,7 +68,7 @@ class CreateOutputLabelTest(unittest.TestCase):
         self.SOLLDataFrame= pd.DataFrame()
 
         self.HSI_values = np.zeros(256)
-        self.DAX_buyDayValues= np.arange((182.0))
+        self.DAX_buyDayValues= np.concatenate((np.array([0.0,1.0]),2*np.arange(180.0)))
         self.DAX_sellDayValues= self.DAX_buyDayValues[::-1]
         self.DAX_noTradeDayValuesOne= np.concatenate((np.array([0.0,1000.0]),np.arange(180.0)))
         self.DAX_noTradeDayValuesTwo=np.concatenate((np.array([1000.0,0.0]),np.arange(180.0)))

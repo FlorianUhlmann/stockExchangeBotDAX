@@ -27,7 +27,6 @@ class DemoCheckForMissingData:
                 rowToAppend = pd.DataFrame(
                     {"date": df_incrt.date.loc[inx], "time": DAX_list_Time[inc], "close": df_incrt.close.loc[inx]},
                     index=[inx])
-                print(rowToAppend)
                 return df_incrt.append(rowToAppend, ignore_index=True)
             else:
                 print("check the last rows of input data. The time column is missing values")
@@ -44,28 +43,27 @@ class DemoCheckForMissingData:
             for inx, curTime in enumerate(df.time):
                 inc = resetListIndex(inx, inc)
 
-                # print( inx ,curTime,DAX_list_Time[inc] )
                 if curTime == DAX_list_tradingTimes[inc]:
-                    # print( inx ,curTime ,DAX_list_Time[inc] )
                     inc_index = inx + 1
 
-                    # print('inc_index = ',inc_index)
-
                 else:
-                    if (inx % 10 == 0 and inx != 0):
+                    if DAX_list_tradingTimes[inc] == 100 and curTime != DAX_list_tradingTimes[inc]:
+                        print()
+                        print('time 100 missing at index {}'.format(inx))
+                        print('CODE EXECUTION STOPS HERE')
+                        print('please add missing data and run the program again')
+                        print()
+                        # stop loop
+                        exit(1)
+
+                    elif (inx % 10 == 0 and inx != 0):
                         rowToInsert = pd.DataFrame({"date": df.date.loc[inx - 1], "time": DAX_list_tradingTimes[inc],
                                                     "close": df.close.loc[inx - 1]}, index=[inx])
                         df = pd.concat([df.iloc[:inx], rowToInsert, df.iloc[inx:]]).reset_index(drop=True)
                     else:
-                        # print(df_incrt.date.loc[inx],df_incrt.time.loc[inx],df_incrt.close.loc[inx])
                         rowToInsert = pd.DataFrame({"date": df.date.loc[inx], "time": DAX_list_tradingTimes[inc], "close": df.close.loc[inx]},index=[inx])
                         df = pd.concat([df.iloc[:inx], rowToInsert, df.iloc[inx:]]).reset_index(drop=True)
 
-                    # print("new Val " + str(df_incrt.loc[inx]))
-                    print('in 2nd loop')
-                    # print(df_incrt.loc[inc])
-
-                    print()
                     inc_index = inx + 1
                     inc = 0
                     lengthDataFrame = len(df)

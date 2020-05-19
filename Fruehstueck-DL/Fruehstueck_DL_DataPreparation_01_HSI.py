@@ -19,9 +19,9 @@ class DataPreparationHSI:
         df= stockDataToCut
 
         #remove all times from 00:00 - 1:59 h
-        for h in range(3, 24):
+        for h in range(5, 24):
             for m in range(0, 60):
-                if (h == 3 and m == 0):
+                if (h == 5 and m == 0):
                     continue
                 t = time(h, m)
                 time_convert = t.strftime("%H:%M")
@@ -55,8 +55,8 @@ class DataPreparationHSI:
 
 def main():
 
-    pathRawDataFrameDAX = 'D:/Profiles/fuhlmann/Programmierung/Python/boerse_DataScience_project/Boersendaten/HAN_SENG_data/HSI_M1_2018/HSI_M1_2018.csv'
-    savingpathFormatedDataFrameHSI = 'D:/Profiles/fuhlmann/Programmierung/Python/boerse_DataScience_project/Boersendaten/HAN_SENG_data/HSI_M1_2018/HSI_M1_2018_CLOSE_UTC-5.csv'
+    pathRawDataFrameDAX = 'D:/Profiles/fuhlmann/Programmierung/Python/boerse_DataScience_project/Boersendaten/HSI_data/HSI_M1_2018/HSI_M1_2018.csv'
+    savingpathFormatedDataFrameHSI = 'D:/Profiles/fuhlmann/Programmierung/Python/boerse_DataScience_project/Boersendaten/HSI-_data/HSI_M1_2018/HSI_M1_2018_CLOSE_UTC-5_NewTry.csv'
 
     DFtoPrepare = DataPreparationHSI(pathRawDataFrameDAX)
     DFtoPrepare.showDataFrame()
@@ -68,7 +68,7 @@ def main():
 
 main()
 
-
+'''
 start = df_HSI.date.searchsorted(datetime.datetime(2018, 2, 1))
 end = df_HSI.date.searchsorted(datetime.datetime(2018, 3, 1))
 df_HSI_february = df_HSI.iloc[start:end]
@@ -78,3 +78,4 @@ start = df_DAX.date.searchsorted(datetime.datetime(2018, 2, 1))
 end = df_DAX.date.searchsorted(datetime.datetime(2018, 3, 1))
 df_DAX_february = df_DAX.iloc[start:end]
 df_DAX_february.to_csv('D:/Profiles/fuhlmann/Programmierung/python/boerse_DataScience_project/Boersendaten/DAX_data/DAX_M1_2018/DAX_M1_2018_02_february_cleanedData.csv', sep=',', index=False)
+'''

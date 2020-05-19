@@ -3,7 +3,8 @@ import unittest
 import pandas as pd
 from pandas.util.testing import assert_frame_equal
 
-from Demo_check_for_missing_data
+from Demo_check_for_missing_data_HSI import *
+
 pd.set_option('display.max_row', 50)
 
 
@@ -59,7 +60,7 @@ class MissingValuesInDataFrames(unittest.TestCase):
             return df_data_correct_SOLL_last_place_missing
             
         def createListCorrectTime():
-            list_time = [1,2,3,4,5,6,7,8,9,10,1,2,3,4,5,6,7,8,9,10]
+            list_time = [1,2,3,4,5,6,7,8,9,10]
             return list_time
 
         def createDFIncorrectOnePlaceFalse():
@@ -157,8 +158,8 @@ class MissingValuesInDataFrames(unittest.TestCase):
         DFIncorrect = self.DFIncorrectOnePlaceFalseAtEndOfListCorrectTime
         SOLL_DataFrame = self.DFSOLL_testCase_onePlaceFalseAtEndOfListCorrectTime
 
-        CheckForMissingData = DemoCheckForMissingData()
-        IST_DataFrame = CheckForMissingData.seachAndReplaceMissingData(DFIncorrect, self.listCorrectTime)
+        CheckForMissingData = DemoCheckForMissingDataHSI()
+        IST_DataFrame = CheckForMissingData.seachAndReplaceMissingDataHSI(DFIncorrect, self.listCorrectTime)
         print("IST_DataFrame")
 
         print(IST_DataFrame)

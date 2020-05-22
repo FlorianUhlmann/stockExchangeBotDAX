@@ -18,8 +18,8 @@ class OutputDataGenerator():
         #gucken ob unterfunktionen anders aufbaubar sind - python knwoledge
         def sliceRawDataToRelevantDAXData(dataFrame):
             #hardocded numbers in variablen namen ändern
-            DAXbegin = dataFrame.iloc[:, 182:184]
-            DAXend = dataFrame.iloc[:, 242:]
+            DAXbegin = dataFrame.iloc[:, 183:185]
+            DAXend = dataFrame.iloc[:, 243:]
             relevantDaxData = pd.concat([DAXbegin, DAXend], axis=1)
             return relevantDaxData
         def createDataFrameWithTradingDayInfo(DataFrameRelevantDAXData):
@@ -32,7 +32,7 @@ class OutputDataGenerator():
             DAX_SELL_DAY = 0
             NO_TRADE_DAY =0
             stockExchangeDay = 0
-            threshold = 10
+            threshold = 0.0
 
             for row,index in DF_DAX.iterrows():
 
@@ -65,7 +65,7 @@ class OutputDataGenerator():
 
                 f = pd.Series(np.array([DAX_BUY_DAY, DAX_SELL_DAY, NO_TRADE_DAY]), index=('DAX_BUY_DAY', 'DAX_SELL_DAY', 'NO_TRADE_DAY'))
                 DataFrame_TraidingAdvice = DataFrame_TraidingAdvice.append(f, ignore_index=True, sort=True)
-
+                stockExchangeDay = stockExchangeDay +1
                 DAX_BUY_DAY = 0
                 DAX_SELL_DAY = 0
                 NO_TRADE_DAY = 0

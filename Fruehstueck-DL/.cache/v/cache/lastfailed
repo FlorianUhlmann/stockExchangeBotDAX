@@ -1,7 +1,0 @@
-{
-  "Fruehstueck-DL-DataPreparation-TEST.py": true,
-  "Fruehstueck-DL-DataPreparation-TEST.py::TestDataPreparation::testForColumnCut": true,
-  "Fruehstueck_DL_DataPreparation_TDD.py::TestDataPreparation": true,
-  "Fruehstueck_DL_DataPreparation_TDD.py::TestDataPreparation::testForColumnCut": true,
-  "Fruehstueck_DL_DataPreparation_createOutputLabels_TDD.py::CreateOutputLabelTest::test_OutputLabelsCorrectCreated": true
-}

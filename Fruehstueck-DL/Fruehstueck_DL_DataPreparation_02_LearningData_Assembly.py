@@ -166,12 +166,12 @@ class LearningDataAssembly:
 
 
 def main():
-    pathInputDataDAX = 'D:/Profiles/fuhlmann/Programmierung/python/boerse_DataScience_project/Boersendaten/DAX_data/DAX_M1_2018/DAX_M1_2018_01_january_cleanedData.csv'
-    pathInputDataHSI = 'D:/Profiles/fuhlmann/Programmierung/python/boerse_DataScience_project/Boersendaten/HSI_data/HSI_M1_2018/HSI_M1_2018_01_january_cleanedData.csv'
+    pathInputDataDAX = 'D:/Profiles/fuhlmann/Programmierung/python/boerse_DataScience_project/Boersendaten/DAX_data/DAX_M1_2018/DAX_M1_2018_02_february_cleanedANDunifiedData.csv'
+    pathInputDataHSI = 'D:/Profiles/fuhlmann/Programmierung/python/boerse_DataScience_project/Boersendaten/HSI_data/HSI_M1_2018/HSI_M1_2018_02_february_cleanedANDunifiedData.csv'
 
     #pathInputDataDAX = 'D:/Profiles/fuhlmann/Programmierung/Python/boerse_DataScience_project/Fruehstueck-DL/DAX_DataFrameRaw.csv'
     #pathInputDataHSI = 'D:/Profiles/fuhlmann/Programmierung/Python/boerse_DataScience_project/Fruehstueck-DL/HSI_DataFrameRaw.csv'
-    pathSaveOuput = 'D:/Profiles/fuhlmann/Programmierung/python/boerse_DataScience_project/Boersendaten/DAX_HSI_2018_01_january.csv'
+    pathSaveOuput = 'D:/Profiles/fuhlmann/Programmierung/python/boerse_DataScience_project/Boersendaten/DAX_HSI_2018_02_february.csv'
 
     GenerateTrainData = LearningDataAssembly(pathInputDataHSI, pathInputDataDAX)
     train_data = GenerateTrainData.createTrainingdataDataFrame(GenerateTrainData.hsi_DataFrame_rawData,

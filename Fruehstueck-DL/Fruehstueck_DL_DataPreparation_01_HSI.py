@@ -18,6 +18,7 @@ class DataPreparationHSI:
 
         df= stockDataToCut
 
+
         #remove all times from 00:00 - 1:59 h
         for h in range(5, 24):
             for m in range(0, 60):
@@ -28,8 +29,22 @@ class DataPreparationHSI:
 
                 df = df.loc[df['time'] != str(time_convert)]
 
+        for hour in range(3, 4):
+            for min in range(30,59):
+                time_convert = time(hour,min).strftime("%H:%M")
+
+                df = df.loc[df['time'] != str(time_convert)]
+
+        for hour in range(4, 5):
+            for min in range(0, 15):
+                time_convert = time(hour, min).strftime("%H:%M")
+
+                df = df.loc[df['time'] != str(time_convert)]
+
         stockDataProcessed = df
         return stockDataProcessed
+
+
 
     def removeColumns(self,stockDataToCut):
 
@@ -56,7 +71,7 @@ class DataPreparationHSI:
 def main():
 
     pathRawDataFrameDAX = 'D:/Profiles/fuhlmann/Programmierung/Python/boerse_DataScience_project/Boersendaten/HSI_data/HSI_M1_2018/HSI_M1_2018.csv'
-    savingpathFormatedDataFrameHSI = 'D:/Profiles/fuhlmann/Programmierung/Python/boerse_DataScience_project/Boersendaten/HSI-_data/HSI_M1_2018/HSI_M1_2018_CLOSE_UTC-5_NewTry.csv'
+    savingpathFormatedDataFrameHSI = 'D:/Profiles/fuhlmann/Programmierung/Python/boerse_DataScience_project/Boersendaten/HSI_data/HSI_M1_2018/HSI_M1_2018_CLOSE_UTC-5_NewTry_pause1.csv'
 
     DFtoPrepare = DataPreparationHSI(pathRawDataFrameDAX)
     DFtoPrepare.showDataFrame()

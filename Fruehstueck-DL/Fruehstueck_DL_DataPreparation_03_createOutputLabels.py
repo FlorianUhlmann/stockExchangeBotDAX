@@ -94,8 +94,8 @@ class OutputDataGenerator():
 
 def main():
 
-    pathDataFrame = 'D:/Profiles/fuhlmann/Programmierung/python/boerse_DataScience_project/Boersendaten/Fruehstueck_training_data_2019_january.csv'
-    pathSaveDataFrame = 'D:/Profiles/fuhlmann/Programmierung/python/boerse_DataScience_project/Fruehstueck-DL/DataFrameTrainingDataForAI_2019_january.csv'
+    pathDataFrame = 'D:/Profiles/fuhlmann/Programmierung/python/boerse_DataScience_project/Boersendaten/DAX_HSI_2018_01_january.csv'
+    pathSaveDataFrame = 'D:/Profiles/fuhlmann/Programmierung/python/boerse_DataScience_project/Boersendaten/DataFrameTrainingDataForAI_2018_01_january.csv'
 
     createOutput = OutputDataGenerator(pathDataFrame)
     trainingDataFrame = createOutput.createOutputDataFrame(createOutput.DataFrame_input)

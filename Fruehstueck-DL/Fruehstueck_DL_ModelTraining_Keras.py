@@ -13,7 +13,7 @@ import mlflow.keras
 mlflow.keras.autolog()
 from sklearn.model_selection import train_test_split
 # load data
-stockData = pd.read_csv('D:/Profiles/fuhlmann/Programmierung/Python/boerse_DataScience_project/Fruehstueck-DL/DataFrameTrainingDataForAI_2019_january.csv')
+stockData = pd.read_csv('D:/Profiles/fuhlmann/Programmierung/Python/boerse_DataScience_project/Boersendaten/DataFrameTrainingDataForAI_2018_01_january.csv')
 ##remove index column
 stockData = stockData.drop(stockData.columns[0], axis=1)
 #get labels and features

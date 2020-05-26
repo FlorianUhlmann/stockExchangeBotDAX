@@ -38,13 +38,13 @@ class DataPreparationHSI_checkForMissingData:
                     if (h == 5): break
 
             hsiClose = time(5, 0).strftime("%H:%M")
-            list_featuresHSI.append("HSI_" + str(hsiClose))
+            list_featuresHSI.append(str(hsiClose))
 
             return list_featuresHSI
 
         def resetListIndex(inx, inc):
-            # reset list index at end of list = 182
-            if inx % 255 == 0 and inx != 0:
+            # reset list index at end of list len(list) = 257
+            if inx % 256 == 0 and inx != 0:
                 return 0
             else:
                 return inc
@@ -70,7 +70,9 @@ class DataPreparationHSI_checkForMissingData:
         inc_index = 0
         lengthDataFrame = len(df)
         while inc_index < lengthDataFrame:
-
+            if(lengthDataFrame >9999):
+                break
+            print(lengthDataFrame)
             for inx, curTime in enumerate(df.time):
                 inc = resetListIndex(inx, inc)
 
@@ -79,8 +81,9 @@ class DataPreparationHSI_checkForMissingData:
                     inc_index = inx + 1
                 # else change value
                 else:
+                    print("loop  replacing values")
                     # if the value to change is the last value in HSI_list_tradingTimes AND indexvalue for the value is under 10
-                    if (inx % 254 == 0 and inx != 0 and HSI_list_tradingTimes[inc] == "05:00"):
+                    if (inx % 255 == 0 and inx != 0 and HSI_list_tradingTimes[inc] == "05:00"):
                         # create value
                         print('in row 1')
                         rowToInsert = pd.DataFrame(
@@ -96,6 +99,7 @@ class DataPreparationHSI_checkForMissingData:
                     # if the value to change is the last value in HSI_list_tradingTimes AND indexvalue for the value is over 10
                     elif (inx %  509 == 0 and inx != 0 and HSI_list_tradingTimes[inc] == "05:00"):
                         # create value
+                        print('in row 2')
                         rowToInsert = pd.DataFrame(
                             {"date": df.date.loc[inx - 1], "time": HSI_list_tradingTimes[inc],
                              "close": df.close.loc[inx - 1]}, index=[inx])
@@ -108,6 +112,7 @@ class DataPreparationHSI_checkForMissingData:
                         break
                     # if the value is not the last value in     HSI_list_tradingTimes
                     else:
+                        print('in else loop')
                         # handle special case -> value looks like last value before row starts again, but is just
                         #  bc of missing data   e.g. 1,2,3,4,5,6,1,2,3,4,5.....(missing7,8,9,10)
                         if (df.date.loc[inx - 1] != df.date.loc[inx] == df.date.loc[inx + 1] and inc != 0):
@@ -138,6 +143,7 @@ class DataPreparationHSI_checkForMissingData:
                     inc_index = inx + 1
                     inc = 0
                     lengthDataFrame = len(df)
+                    break
         return df
 
     @classmethod
@@ -155,8 +161,8 @@ class DataPreparationHSI_checkForMissingData:
 
 def main():
     HSIDataPath = "D:/Profiles/fuhlmann/Programmierung/Python/boerse_DataScience_project/Boersendaten/HSI_data/"
-    HSIData = "HSI_M1_2018/HSI_M1_2018_01_january_cleanedData.csv"
-    cleanedHSIData = "HSI_M1_2018/HSI_M1_2018_01_january_cleanedANDunifiedData.csv"
+    HSIData = "HSI_M1_2018/HSI_M1_2018_02_february_cleanedData.csv"
+    cleanedHSIData = "HSI_M1_2018/HSI_M1_2018_02_february_cleanedANDunifiedData.csv"
     dataPath = os.path.join(HSIDataPath, HSIData)
 
     pathcleanedDataFrameHSI =  os.path.join(HSIDataPath, HSIData)
